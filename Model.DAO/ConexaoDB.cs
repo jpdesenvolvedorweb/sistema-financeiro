@@ -2,17 +2,17 @@
 
 namespace Model.Dao
 {
-    class ConexaoDB
+    public class ConexaoDB
     {
         private static ConexaoDB objConexaoDB = null;
         private SqlConnection con;
 
         private ConexaoDB()
         {
-            con = new SqlConnection("Data Source=Zeus; Initial Catalog=Financeiro; Integrated Security= True");
+            con = new SqlConnection("Data Source=Zeus; Initial Catalog=Financial; Integrated Security= True");
         }
 
-        public static ConexaoDB saberEstado()
+        public static ConexaoDB knowState()
         {
             if (objConexaoDB == null)
             {
