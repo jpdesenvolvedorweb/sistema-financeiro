@@ -40,25 +40,25 @@ namespace Model.Entity
             get => name;
             set => name = value;
         }
-        public string Cpf 
+        public string Cpf
         {
-            get => cpf; 
-            set => cpf = value; 
+            get => cpf;
+            set => cpf = value;
         }
-        public string Address 
+        public string Address
         {
-            get => address; 
-            set => address = value; 
+            get => address;
+            set => address = value;
         }
-        public string Telephone 
+        public string Telephone
         {
-            get => telephone; 
-            set => telephone = value; 
+            get => telephone;
+            set => telephone = value;
         }
-        public int State 
-        { 
-            get => state; 
-            set => state = value; 
+        public int State
+        {
+            get => state;
+            set => state = value;
         }
     }
 }

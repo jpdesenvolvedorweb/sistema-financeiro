@@ -80,11 +80,11 @@ namespace SistemaFinanceiro.Controllers
         [HttpPost]
         public ActionResult SearchClients(string txtname, string txtcpf, long txtclient = -1)
         {
-            if(txtname == "")
+            if (txtname == "")
             {
                 txtname = "-1";
             }
-            if(txtcpf == "")
+            if (txtcpf == "")
             {
                 txtcpf = "-1";
             }
@@ -186,7 +186,7 @@ namespace SistemaFinanceiro.Controllers
                     ViewBag.MessageError = "Erro CPF, não insira Letras";
                     break;
 
-                case 20: 
+                case 20:
                     ViewBag.MessageError = "Insira Nome do Cliente";
                     break;
 
