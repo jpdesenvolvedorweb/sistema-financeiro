@@ -69,26 +69,58 @@ namespace SistemaFinanceiro.Controllers
             return View();
         }
 
-        // GET: Client/Delete/5
-        public ActionResult Delete(int id)
+        //GET: Client/SearchClients
+        public ActionResult SearchClients()
         {
-            return View();
+            List<Client> list = objClientNeg.findAll();
+            return View(list);
+        }
+
+        //POST: Client/SearchClients
+        [HttpPost]
+        public ActionResult SearchClients(string txtname, string txtcpf, long txtclient = -1)
+        {
+            if(txtname == "")
+            {
+                txtname = "-1";
+            }
+            if(txtcpf == "")
+            {
+                txtcpf = "-1";
+            }
+
+            if (txtname == "-1" && txtcpf == "-1" && txtclient == -1)
+            {
+                messageSeachClients();
+            }
+
+            Client objClient = new Client();
+            objClient.Name = txtname;
+            objClient.IdClient = txtclient;
+            objClient.Cpf = txtcpf;
+
+            List<Client> client = objClientNeg.findAllClients(objClient);
+            return View(client);
+        }
+
+        // GET: Client/Delete/5
+        public ActionResult Delete(long id)
+        {
+            messageInitialEliminate();
+            Client objClient = new Client(id);
+            objClientNeg.find(objClient);
+            return View(objClient);
         }
 
         // POST: Client/Delete/5
         [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public ActionResult Delete(Client objClient)
         {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+            messageInitialEliminate();
+            objClientNeg.delete(objClient);
+            showMessageEliminate(objClient);
+            Client objClient2 = new Client();
+            return View(objClient2);
         }
 
         //mensagem de erro
@@ -146,11 +178,6 @@ namespace SistemaFinanceiro.Controllers
             }
         }
 
-        public void messageStartRegister()
-        {
-            ViewBag.MessageBegin = "Insira os dados do Cliente e clique em salvar";
-        }
-
         public void messageErrorUpdate(Client obClient)
         {
             switch (obClient.State)
@@ -193,9 +220,50 @@ namespace SistemaFinanceiro.Controllers
             }
         }
 
+        public void showMessageEliminate(Client objClient)
+        {
+            switch (objClient.State)
+            {
+                case 1:
+                    ViewBag.MessageError = "Cliente ( " + objClient.IdClient + "Não ";
+                    break;
+
+                case 33:
+                    ViewBag.MessageError = "Cliente: ( " + objClient.Name + " ) já foi excluído";
+                    break;
+
+                case 34:
+                    ViewBag.MessageError = "Não se pode apagar o Cliente ( " + objClient.Name + " ) Tem vendas relacionadas ao cliente!!!";
+                    break;
+
+                case 99:
+                    ViewBag.MessageError = "Cliente ( " + objClient.Name + ") Foi Excluido!!!";
+                    break;
+
+                default:
+                    ViewBag.MessageError = "===Deu Erro ???===";
+                    break;
+            }
+        }
+
         public void messageInitialUpdate()
         {
             ViewBag.messageInitialUpdate = "Formulário para atualizar dados do cliente";
+        }
+
+        public void messageStartRegister()
+        {
+            ViewBag.MessageBegin = "Insira os dados do Cliente e clique em salvar";
+        }
+
+        public void messageInitialEliminate()
+        {
+            ViewBag.MessageInitialEliminate = "Formulário de Exclusão";
+        }
+
+        public void messageSeachClients()
+        {
+            ViewBag.MessageEmpty = "Deve ser digitado algum campo";
         }
 
     }

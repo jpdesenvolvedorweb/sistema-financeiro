@@ -4,7 +4,9 @@
 }
 <a href="">Relatórios</a>
 <h2 class="text-center text-success">Lista de Clientes</h2>
-<div class="well well-sm"><a class="btn btn-primary" href="~/Client/Create">Novo</a></div>
+<div class="well well-sm"><a class="btn btn-primary" href="~/Client/Create">Novo</a>
+    <a class="btn btn-info" href="~/Client/SearchClients">Buscar</a>
+ </div>
 <table class="table table-hover table-striped">
     <thead>
 
@@ -29,7 +31,7 @@
                 <td>@objClient.Telephone</td>
                 <td><a class="btn btn-success" href="~/Client/Details/@objClient.IdClient"><span class="glyphicon glyphicon-eye-open"></span></a></td>
                 <td><a class="btn btn-info" href="~/Client/Edit/@objClient.IdClient"><span class="fa fa-edit"></span></a></td>
-                <td><a class="btn btn-danger" href="~/Client/Eliminate/@objClient.IdClient"><span class="fa fa-book"></span></a></td>
+                <td><a class="btn btn-danger" href="~/Client/Delete/@objClient.IdClient"><span class="fa fa-book"></span></a></td>
             </tr>
         }
     </tbody>

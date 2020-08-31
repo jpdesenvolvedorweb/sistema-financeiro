@@ -16,28 +16,28 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-6">
-                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", @placeholder = "Digite o Nome" } })
                 </div>
             </div>
 
             <div class="form-group">
                 @Html.LabelFor(model => model.Cpf, htmlAttributes: new { @class = "control-label  col-md-2" })
                 <div class="col-md-4">
-                    @Html.EditorFor(model => model.Cpf, new { htmlAttributes = new { @class = "form-control", @type = "number" } })
+                    @Html.EditorFor(model => model.Cpf, new { htmlAttributes = new { @class = "form-control", @type = "number", @placeholder = "Digite o CPF" } })
                 </div>
             </div>
 
             <div class="form-group">
                 @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label  col-md-2" })
                 <div class="col-md-8">
-                    @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control", @placeholder = "Digite o Endereço" } })
                 </div>
             </div>
 
             <div class="form-group">
                 @Html.LabelFor(model => model.Telephone, htmlAttributes: new { @class = "control-label  col-md-2" })
                 <div class="col-md-4">
-                    @Html.EditorFor(model => model.Telephone, new { htmlAttributes = new { @class = "form-control", @type = "number" } })
+                    @Html.EditorFor(model => model.Telephone, new { htmlAttributes = new { @class = "form-control", @type = "number", @placeholder = "Digite o Telefone" } })
                 </div>
             </div>
 
