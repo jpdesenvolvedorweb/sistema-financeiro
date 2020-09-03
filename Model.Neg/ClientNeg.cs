@@ -128,7 +128,7 @@ namespace Model.Neg
             bool verification = true;
             //begin validar codigo retorna estado = 1
             string code = objClient.IdClient.ToString();
-            long id = 0;
+           // long id = 0;
             if (code == null)
             {
                 objClient.State = 10;
@@ -138,7 +138,7 @@ namespace Model.Neg
             {
                 try
                 {
-                    id = Convert.ToInt64(objClient.IdClient);
+                   // id = Convert.ToInt64(objClient.IdClient);
                     verification = code.Length > 0 && code.Length < 999999;
 
                     if (!verification)

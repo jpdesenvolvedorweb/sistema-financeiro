@@ -11,7 +11,6 @@ namespace Model.Entity
 
         public Category()
         {
-
         }
 
         public Category(string idCategory)

@@ -6,6 +6,8 @@
 <h2>@ViewBag.MessageInitialUpdate</h2>
 @using(Html.BeginForm())
 {
+    @Html.AntiForgeryToken()
+
     <div class=" form-horizontal">
         <fieldset>
 

@@ -34,15 +34,16 @@ namespace SistemaFinanceiro.Controllers
         // GET: Client/Create
         public ActionResult Create()
         {
-            messageStartRegister();
+            MessageStartRegister();
             return View();
         }
 
         // POST: Client/Create
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Create(Client objClient)
         {
-            messageStartRegister();
+            MessageStartRegister();
             objClientNeg.create(objClient);
             MessageErrorRegister(objClient);
             ModelState.Clear();
@@ -53,7 +54,7 @@ namespace SistemaFinanceiro.Controllers
         // GET: Client/Edit/5
         public ActionResult Edit(long id)
         {
-            messageInitialUpdate();
+            MessageInitialUpdate();
             Client objClient = new Client(id);
             objClientNeg.find(objClient);
             return View(objClient);
@@ -61,11 +62,12 @@ namespace SistemaFinanceiro.Controllers
 
         // POST: Client/Edit/5
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Edit(Client objClient)
         {
-            messageInitialUpdate();
+            MessageInitialUpdate();
             objClientNeg.update(objClient);
-            messageErrorUpdate(objClient);
+            MessageErrorUpdate(objClient);
             return View();
         }
 
@@ -78,6 +80,7 @@ namespace SistemaFinanceiro.Controllers
 
         //POST: Client/SearchClients
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult SearchClients(string txtname, string txtcpf, long txtclient = -1)
         {
             if (txtname == "")
@@ -91,7 +94,7 @@ namespace SistemaFinanceiro.Controllers
 
             if (txtname == "-1" && txtcpf == "-1" && txtclient == -1)
             {
-                messageSeachClients();
+                MessageSeachClients();
             }
 
             Client objClient = new Client();
@@ -106,7 +109,7 @@ namespace SistemaFinanceiro.Controllers
         // GET: Client/Delete/5
         public ActionResult Delete(long id)
         {
-            messageInitialEliminate();
+            MessageInitialEliminate();
             Client objClient = new Client(id);
             objClientNeg.find(objClient);
             return View(objClient);
@@ -114,17 +117,18 @@ namespace SistemaFinanceiro.Controllers
 
         // POST: Client/Delete/5
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Delete(Client objClient)
         {
-            messageInitialEliminate();
+            MessageInitialEliminate();
             objClientNeg.delete(objClient);
-            showMessageEliminate(objClient);
+            ShowMessageEliminate(objClient);
             Client objClient2 = new Client();
             return View(objClient2);
         }
 
         //mensagem de erro
-        public void MessageErrorRegister(Client objClient)
+        private void MessageErrorRegister(Client objClient)
         {
             switch (objClient.State)
             {
@@ -178,7 +182,7 @@ namespace SistemaFinanceiro.Controllers
             }
         }
 
-        public void messageErrorUpdate(Client obClient)
+        private void MessageErrorUpdate(Client obClient)
         {
             switch (obClient.State)
             {
@@ -220,7 +224,7 @@ namespace SistemaFinanceiro.Controllers
             }
         }
 
-        public void showMessageEliminate(Client objClient)
+        private void ShowMessageEliminate(Client objClient)
         {
             switch (objClient.State)
             {
@@ -246,22 +250,22 @@ namespace SistemaFinanceiro.Controllers
             }
         }
 
-        public void messageInitialUpdate()
+        private void MessageInitialUpdate()
         {
             ViewBag.messageInitialUpdate = "Formulário para atualizar dados do cliente";
         }
 
-        public void messageStartRegister()
+        private void MessageStartRegister()
         {
             ViewBag.MessageBegin = "Insira os dados do Cliente e clique em salvar";
         }
 
-        public void messageInitialEliminate()
+        private void MessageInitialEliminate()
         {
             ViewBag.MessageInitialEliminate = "Formulário de Exclusão";
         }
 
-        public void messageSeachClients()
+        private void MessageSeachClients()
         {
             ViewBag.MessageEmpty = "Deve ser digitado algum campo";
         }

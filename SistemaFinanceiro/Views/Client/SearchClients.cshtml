@@ -8,6 +8,8 @@
     <div class="panel-body">
         @using (Html.BeginForm())
         {
+            @Html.AntiForgeryToken()
+
             <div class="form-horizontal">
                 <h2 style="text-align:center; font-family:Arial; font-weight:700;">Buscar Cliente por:</h2>
                 <fieldset>

@@ -11,6 +11,7 @@ namespace Model.DAO
 
         private ConexaoDB objConexaoDB;
         private SqlCommand command;
+        private SqlDataReader reader;
 
         public ClientDao()
         {
@@ -91,7 +92,7 @@ namespace Model.DAO
             {
                 command = new SqlCommand(find, objConexaoDB.getCon());
                 objConexaoDB.getCon().Open();
-                SqlDataReader reader = command.ExecuteReader();
+                reader = command.ExecuteReader();
                 registers = reader.Read();
                 if (registers)
                 {
@@ -128,7 +129,7 @@ namespace Model.DAO
             {
                 command = new SqlCommand(findAll, objConexaoDB.getCon());
                 objConexaoDB.getCon().Open();
-                SqlDataReader reader = command.ExecuteReader();
+                reader = command.ExecuteReader();
                 while (reader.Read())
                 {
                     Client obj = new Client();

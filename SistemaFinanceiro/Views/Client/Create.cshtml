@@ -11,6 +11,8 @@
 @*Html.EditorForModel*@
 @using (Html.BeginForm())
 {
+    @Html.AntiForgeryToken()
+
     <div class="form-horizontal">
         <fieldset>
             <div class="form-group">
