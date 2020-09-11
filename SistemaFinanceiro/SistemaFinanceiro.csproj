@@ -172,6 +172,7 @@
     <Compile Include="Controllers\ClientController.cs" />
     <Compile Include="Controllers\InicioController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\SalesManController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -312,6 +313,11 @@
     <Content Include="Views\Category\Details.cshtml" />
     <Content Include="Views\Category\Edit.cshtml" />
     <Content Include="Views\Category\Delete.cshtml" />
+    <Content Include="Views\SalesMan\Index.cshtml" />
+    <Content Include="Views\SalesMan\Details.cshtml" />
+    <Content Include="Views\SalesMan\Create.cshtml" />
+    <Content Include="Views\SalesMan\Edit.cshtml" />
+    <Content Include="Views\SalesMan\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

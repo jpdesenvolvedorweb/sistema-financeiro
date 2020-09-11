@@ -30,7 +30,6 @@ namespace Model.DAO
             }
             catch (Exception)
             {
-
                 obj.State = 1;
             }
             finally
@@ -71,7 +70,7 @@ namespace Model.DAO
                 objConexaoDB.getCon().Open();
                 command.ExecuteNonQuery();
             }
-            catch (Exception e)
+            catch (Exception)
             {
 
                 obj.State = 1;
@@ -166,7 +165,7 @@ namespace Model.DAO
                 objConexaoDB.getCon().Open();
                 command.ExecuteNonQuery();
             }
-            catch (Exception e)
+            catch (Exception)
             {
 
                 obj.State = 1;

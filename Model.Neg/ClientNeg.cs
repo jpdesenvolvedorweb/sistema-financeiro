@@ -147,7 +147,7 @@ namespace Model.Neg
                         return;
                     }
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     objClient.State = 100;
                     return;

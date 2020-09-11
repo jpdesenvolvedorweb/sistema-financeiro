@@ -1,0 +1,39 @@
+﻿@model List<Model.Entity.SalesMan>
+@{
+    ViewBag.Title = "Lista de Vendedores";
+}
+<a href="">Relatórios</a>
+<h2 class="text-center text-success">Lista de Vendedores</h2>
+<div class="well well-sm">
+    <a class="btn btn-primary" href="~/SalesMan/Create">Novo</a>
+    <a class="btn btn-info" href="~/SalesMan/SearchSalesMans">Buscar</a>
+</div>
+<table class="table table-hover table-striped">
+    <thead>
+
+        <tr class="bg-primary">
+            <th>Código</th>
+            <th>Nome</th>
+            <th>CPF</th>
+            <th>Endereço</th>
+            <th>Telefone</th>
+            <th colspan="3">Operações</th>
+        </tr>
+
+    </thead>
+    <tbody>
+        @foreach (var objSalesMan in Model)
+        {
+            <tr>
+                <td>@objSalesMan.IdSalesMan</td>
+                <td>@objSalesMan.Name</td>
+                <td>@objSalesMan.Cpf</td>
+                <td>@objSalesMan.Address</td>
+                <td>@objSalesMan.Telephone</td>
+                <td><a class="btn btn-success" href="~/SalesMan/Details/@objSalesMan.IdSalesMan"><span class="glyphicon glyphicon-eye-open"></span></a></td>
+                <td><a class="btn btn-info" href="~/SalesMan/Edit/@objSalesMan.IdSalesMan"><span class="fa fa-edit"></span></a></td>
+                <td><a class="btn btn-danger" href="~/SalesMan/Delete/@objSalesMan.IdSalesMan"><span class="fa fa-book"></span></a></td>
+            </tr>
+        }
+    </tbody>
+</table>
