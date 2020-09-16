@@ -132,7 +132,7 @@ namespace SistemaFinanceiro.Controllers
                     break;
 
                 case 99:
-                    ViewBag.MessageError = "Categoria ( " + objCategory.IdCategory + " ) foi inserida no sistema";
+                    ViewBag.MessageSucess = "Categoria ( " + objCategory.IdCategory + " ) foi inserida no sistema";
                     break;
             }
         }
@@ -174,7 +174,7 @@ namespace SistemaFinanceiro.Controllers
                     break;
 
                 case 99:
-                    ViewBag.MessageError = "Dados da categoria ( " + objCategory.IdCategory + " ) foram modificados";
+                    ViewBag.MessageSucess = "Dados da categoria ( " + objCategory.IdCategory + " ) foram modificados";
                     break;
             }
         }

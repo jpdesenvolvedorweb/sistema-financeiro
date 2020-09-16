@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="CategoryNeg.cs" />
     <Compile Include="ClientNeg.cs" />
+    <Compile Include="ModePayNeg.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SalesManNeg.cs" />

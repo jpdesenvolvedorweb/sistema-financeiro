@@ -1,0 +1,29 @@
+﻿@model Model.Entity.ModePay
+@{
+    ViewBag.Title = Model.Name;
+}
+
+<ol class="breadcrumb">
+    <li><a href="~/">Modo de Pagamento</a></li>
+    <li class="active">@(Model.Name)</li>
+</ol>
+
+<div class="panel panel-default">
+    <div class="panel-heading">Descrição do Modo de Pagamento</div>
+    <div class="panel-body">
+        <dl class="dl-horizontal">
+            <dt>Código</dt>
+            <dd>@Model.IdModePay</dd>
+
+            <dt>Nome</dt>
+            <dd>@Model.Name</dd>
+
+            <dt>Outros Detalhes</dt>
+            <dd>@Model.OtherDetails</dd>
+
+        </dl>
+        <div class="form-actions">
+            |@Html.ActionLink("Voltar a Lista", "Index");
+        </div>
+    </div>
+</div>

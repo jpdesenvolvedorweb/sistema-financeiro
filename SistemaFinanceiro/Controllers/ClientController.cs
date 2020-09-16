@@ -219,7 +219,7 @@ namespace SistemaFinanceiro.Controllers
                     break;
 
                 case 99:
-                    ViewBag.MessageError = "Dados do Cliente ( " + obClient.IdClient + " ) foi atualizado";
+                    ViewBag.MessageSucess = "Dados do Cliente ( " + obClient.IdClient + " ) foi atualizado";
                     break;
             }
         }
@@ -241,7 +241,7 @@ namespace SistemaFinanceiro.Controllers
                     break;
 
                 case 99:
-                    ViewBag.MessageError = "Cliente ( " + objClient.Name + ") Foi Excluido!!!";
+                    ViewBag.MessageSucess= "Cliente ( " + objClient.Name + ") Foi Excluido!!!";
                     break;
 
                 default:

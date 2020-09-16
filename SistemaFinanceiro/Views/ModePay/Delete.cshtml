@@ -1,7 +1,8 @@
-﻿@model Model.Entity.Client
+﻿@model Model.Entity.ModePay
 @{
     ViewBag.Title = "Formulário de Exclusão";
 }
+
 <div class="well well-sm text-primary text-center">
     @ViewBag.MessageInitialEliminate
 </div>
@@ -13,9 +14,9 @@
     <div class="form-horizontal">
         <fieldset>
             <div class="form-group">
-                @Html.LabelFor(model => model.IdClient, htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.LabelFor(model => model.IdModePay, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-2">
-                    @Html.EditorFor(model => model.IdClient, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    @Html.EditorFor(model => model.IdModePay, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                 </div>
             </div>
             <div class="form-group">
@@ -25,21 +26,9 @@
                 </div>
             </div>
             <div class="form-group">
-                @Html.LabelFor(model => model.Cpf, htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.LabelFor(model => model.OtherDetails, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-6">
-                    @Html.EditorFor(model => model.Cpf, new { htmlAttributes = new { @class = "form-control" } })
-                </div>
-            </div>
-            <div class="form-group">
-                @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-6">
-                    @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
-                </div>
-            </div>
-            <div class="form-group">
-                @Html.LabelFor(model => model.Telephone, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-6">
-                    @Html.EditorFor(model => model.Telephone, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.EditorFor(model => model.OtherDetails, new { htmlAttributes = new { @class = "form-control" } })
                 </div>
             </div>
             <div class="form-actions col-md-offset-2">
@@ -49,7 +38,6 @@
         </fieldset>
     </div>
 }
-
 
 <div class="text-primary text-success text-center">
     @ViewBag.MessageSucess;

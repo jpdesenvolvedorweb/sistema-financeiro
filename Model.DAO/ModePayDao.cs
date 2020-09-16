@@ -6,20 +6,21 @@ using System.Data.SqlClient;
 
 namespace Model.DAO
 {
-    public class SalesManDao : Intermediate<SalesMan>
+    public class ModePayDao : Intermediate<ModePay>
     {
         private ConexaoDB objConexaoDB;
         private SqlCommand command;
         private SqlDataReader reader;
 
-        public SalesManDao()
+        public ModePayDao()
         {
             objConexaoDB = ConexaoDB.knowState();
         }
 
-        public void Create(SalesMan obj)
+        public void Create(ModePay obj)
         {
-            string create = "INSERT INTO salesman VALUES('" + obj.IdSalesMan + "', '" + obj.Name + "', '" + obj.Cpf + "', '" + obj.Telephone + "', '" + obj.Address + "')";
+
+            string create = "INSERT INTO modePay (name,otherDetails) VALUES ('" + obj.Name + "','" + obj.OtherDetails + "')";
 
             try
             {
@@ -29,7 +30,7 @@ namespace Model.DAO
             }
             catch (Exception)
             {
-                throw;
+                obj.State = 1000;
             }
             finally
             {
@@ -38,9 +39,9 @@ namespace Model.DAO
             }
         }
 
-        public void Delete(SalesMan obj)
+        public void Delete(ModePay obj)
         {
-            string delete = "DELETE FROM salesman WHERE idSalesman = '" + obj.IdSalesMan + "'";
+            string delete = "DELETE FROM modePay WHERE idPay = '" + obj.IdModePay + "'";
 
             try
             {
@@ -50,7 +51,7 @@ namespace Model.DAO
             }
             catch (Exception)
             {
-                obj.State = 1;
+                obj.State = 1000;
             }
             finally
             {
@@ -59,11 +60,11 @@ namespace Model.DAO
             }
         }
 
-        public bool Find(SalesMan obj)
+        public bool Find(ModePay obj)
         {
-            bool registers;
+            bool registers = true;
+            string find = "select * from modePay where idPay = '" + obj.IdModePay + "'"; 
 
-            string find = "SELECT * FROM salesman WHERE idSalesman = '" + obj.IdSalesMan + "'";
             try
             {
                 command = new SqlCommand(find, objConexaoDB.getCon());
@@ -73,9 +74,7 @@ namespace Model.DAO
                 if (registers)
                 {
                     obj.Name = reader[1].ToString();
-                    obj.Cpf = reader[2].ToString();
-                    obj.Telephone = reader[3].ToString();
-                    obj.Address = reader[4].ToString();
+                    obj.OtherDetails = reader[2].ToString();
                     obj.State = 99;
                 }
                 else
@@ -94,13 +93,12 @@ namespace Model.DAO
             }
 
             return registers;
-
         }
 
-        public List<SalesMan> FindAll()
+        public List<ModePay> FindAll()
         {
-            string findAll = "SELECT * FROM salesman ORDER BY name ASC";
-            List<SalesMan> list = new List<SalesMan>();
+            String findAll = "SELECT * FROM modePay ORDER BY name ASC";
+            List<ModePay> list = new List<ModePay>();
 
             try
             {
@@ -109,14 +107,14 @@ namespace Model.DAO
                 reader = command.ExecuteReader();
                 while (reader.Read())
                 {
-                    SalesMan salesMan = new SalesMan();
-                    salesMan.IdSalesMan = reader[0].ToString();
-                    salesMan.Name = reader[1].ToString();
-                    salesMan.Cpf = reader[2].ToString();
-                    salesMan.Telephone = reader[3].ToString();
-                    salesMan.Address = reader[4].ToString();
-                    list.Add(salesMan);
+                    ModePay objModePayAux = new ModePay();
+                    objModePayAux.IdModePay = Convert.ToInt32(reader[0].ToString());
+                    objModePayAux.Name = reader[1].ToString();
+                    objModePayAux.OtherDetails = reader[2].ToString();
+
+                    list.Add(objModePayAux);
                 }
+                
             }
             catch (Exception)
             {
@@ -130,9 +128,9 @@ namespace Model.DAO
             return list;
         }
 
-        public void Update(SalesMan obj)
+        public void Update(ModePay obj)
         {
-            string update = "update salesman set name= '" + obj.Name + "', telephone= '" + obj.Telephone + "', cpf= '" + obj.Cpf + "', address= '" + obj.Address + "' where idSalesman= '" + obj.IdSalesMan + "'";
+            string update = "update modePay set  name='" + obj.Name + "',otherDetails='" + obj.OtherDetails + "' where idPay='" + obj.IdModePay + "'";
 
             try
             {
