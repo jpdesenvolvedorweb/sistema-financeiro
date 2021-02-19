@@ -8,10 +8,12 @@ namespace Model.Neg
     public class CategoryNeg
     {
         private CategoryDao objCategoryDao;
+        private ProductDao objProductDao;
 
         public CategoryNeg()
         {
             objCategoryDao = new CategoryDao();
+            objProductDao = new ProductDao();
         }
 
         public void create(Category objCategory)
@@ -20,7 +22,7 @@ namespace Model.Neg
             bool verification = true;
 
             string code = objCategory.IdCategory;
-            if (code == null)
+            if (code == null || code.Trim().Equals(""))
             {
                 objCategory.State = 10;
                 return;
@@ -37,7 +39,7 @@ namespace Model.Neg
             }
 
             string name = objCategory.Name;
-            if (name == null)
+            if (name == null || name.Equals(""))
             {
                 objCategory.State = 20;
                 return;
@@ -54,7 +56,7 @@ namespace Model.Neg
             }
 
             string description = objCategory.Description;
-            if (description == null)
+            if (description == null || description.Trim().Equals(""))
             {
                 objCategory.State = 30;
                 return;
@@ -98,9 +100,9 @@ namespace Model.Neg
             Category objCategoryAux = new Category();
             bool verification = true;
 
-            
+
             string name = objCategory.Name;
-            if (name == null)
+            if (name == null || name.Trim().Equals(""))
             {
                 objCategory.State = 20;
                 return;
@@ -117,7 +119,7 @@ namespace Model.Neg
             }
 
             string description = objCategory.Description;
-            if (description == null)
+            if (description == null || description.Trim().Equals(""))
             {
                 objCategory.State = 30;
                 return;
@@ -156,6 +158,15 @@ namespace Model.Neg
             if (!verification)
             {
                 objCategory.State = 33;
+                return;
+            }
+
+            Product objProduct = new Product();
+            objProduct.IdCategory = objCategory.IdCategory;
+            verification = !objProductDao.FindCat(objProduct);
+            if (!verification)
+            {
+                objCategory.State = 34;
                 return;
             }
 

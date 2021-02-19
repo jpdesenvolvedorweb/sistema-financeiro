@@ -1,4 +1,6 @@
-﻿namespace Model.Entity
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Model.Entity
 {
     public class Client: Person
     {
@@ -20,6 +22,7 @@
             this.IdClient = idClient;
         }
 
+        [Display(Name = "Código")]
         public long IdClient
         {
             get => idClient;

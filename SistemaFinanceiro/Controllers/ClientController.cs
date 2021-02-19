@@ -144,6 +144,10 @@ namespace SistemaFinanceiro.Controllers
                     ViewBag.MessageError = "O nome não pode ter mais de 30 caracteres";
                     break;
 
+                case 25: //erro de nome
+                    ViewBag.MessageError = "Campo vazio, digite o nome do cliente";
+                    break;
+
                 case 50: //campo cpf vazio
                     ViewBag.MessageError = "Insira CPF do Cliente";
                     break;

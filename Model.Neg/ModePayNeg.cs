@@ -23,7 +23,7 @@ namespace Model.Neg
             bool verification = true;
 
             string name = objModePay.Name;
-            if (name == null)
+            if (name == null || name.Trim().Equals(""))
             {
                 objModePay.State = 20;
                 return;
@@ -40,7 +40,7 @@ namespace Model.Neg
             }
 
             string otherDetails = objModePay.OtherDetails;
-            if (otherDetails == null)
+            if (otherDetails == null || otherDetails.Trim().Equals(""))
             {
                 objModePay.State = 30;
                 return;
@@ -66,7 +66,7 @@ namespace Model.Neg
             bool verification = true;
 
             string name = objModePay.Name;
-            if (name == null)
+            if (name == null || name.Trim().Equals(""))
             {
                 objModePay.State = 20;
                 return;
@@ -83,7 +83,7 @@ namespace Model.Neg
             }
 
             string otherDetails = objModePay.OtherDetails;
-            if (otherDetails == null)
+            if (otherDetails == null || otherDetails.Trim().Equals(""))
             {
                 objModePay.State = 30;
                 return;

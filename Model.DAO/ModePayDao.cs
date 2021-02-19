@@ -20,11 +20,13 @@ namespace Model.DAO
         public void Create(ModePay obj)
         {
 
-            string create = "INSERT INTO modePay (name,otherDetails) VALUES ('" + obj.Name + "','" + obj.OtherDetails + "')";
+            string create = @"INSERT INTO modePay (name,otherDetails) VALUES (@NAME, @OTHERDETAILS)";
 
             try
             {
                 command = new SqlCommand(create, objConexaoDB.getCon());
+                command.Parameters.AddWithValue("@NAME", obj.Name);
+                command.Parameters.AddWithValue("@OTHERDETAILS", obj.OtherDetails);
                 objConexaoDB.getCon().Open();
                 command.ExecuteNonQuery();
             }
@@ -41,11 +43,12 @@ namespace Model.DAO
 
         public void Delete(ModePay obj)
         {
-            string delete = "DELETE FROM modePay WHERE idPay = '" + obj.IdModePay + "'";
+            string delete = @"DELETE FROM modePay WHERE idPay = @IDMODEPAY";
 
             try
             {
                 command = new SqlCommand(delete, objConexaoDB.getCon());
+                command.Parameters.AddWithValue("@IDMODEPAY", obj.IdModePay);
                 objConexaoDB.getCon().Open();
                 command.ExecuteNonQuery();
             }
@@ -63,11 +66,12 @@ namespace Model.DAO
         public bool Find(ModePay obj)
         {
             bool registers = true;
-            string find = "select * from modePay where idPay = '" + obj.IdModePay + "'"; 
+            string find = @"SELECT * FROM modePay (NOLOCK) WHERE idPay = @IDMODEPAY"; 
 
             try
             {
                 command = new SqlCommand(find, objConexaoDB.getCon());
+                command.Parameters.AddWithValue("@IDMODEPAY", obj.IdModePay);
                 objConexaoDB.getCon().Open();
                 reader = command.ExecuteReader();
                 registers = reader.Read();
@@ -97,7 +101,7 @@ namespace Model.DAO
 
         public List<ModePay> FindAll()
         {
-            String findAll = "SELECT * FROM modePay ORDER BY name ASC";
+            String findAll = "SELECT * FROM modePay (NOLOCK) ORDER BY name ASC";
             List<ModePay> list = new List<ModePay>();
 
             try
@@ -130,11 +134,14 @@ namespace Model.DAO
 
         public void Update(ModePay obj)
         {
-            string update = "update modePay set  name='" + obj.Name + "',otherDetails='" + obj.OtherDetails + "' where idPay='" + obj.IdModePay + "'";
+            string update = "UPDATE modePay SET name= @NAME, otherDetails= @OTHERDETAILS WHERE idPay= @IDMODEPAY";
 
             try
             {
                 command = new SqlCommand(update, objConexaoDB.getCon());
+                command.Parameters.AddWithValue("@NAME", obj.Name);
+                command.Parameters.AddWithValue("@OTHERDETAILS", obj.OtherDetails);
+                command.Parameters.AddWithValue("@IDMODEPAY", obj.IdModePay);
                 objConexaoDB.getCon().Open();
                 command.ExecuteNonQuery();
             }

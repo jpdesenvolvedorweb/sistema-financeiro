@@ -19,7 +19,7 @@ namespace Model.Neg
             bool verification = true;
 
             string code = objSalesMan.IdSalesMan;
-            if (code == null)
+            if (code == null || code.Trim().Equals(""))
             {
                 objSalesMan.State = 10;
                 return;
@@ -37,7 +37,7 @@ namespace Model.Neg
             }
 
             string name = objSalesMan.Name;
-            if (name == null)
+            if (name == null || name.Trim().Equals(""))
             {
                 objSalesMan.State = 20;
                 return;
@@ -54,7 +54,7 @@ namespace Model.Neg
             }
 
             string cpf = objSalesMan.Cpf;
-            if (cpf == null)
+            if (cpf == null || cpf.Trim().Equals(""))
             {
                 objSalesMan.State = 30;
                 return;
@@ -71,7 +71,7 @@ namespace Model.Neg
             }
 
             string telephone = objSalesMan.Telephone;
-            if (telephone == null)
+            if (telephone == null || telephone.Trim().Equals(""))
             {
                 objSalesMan.State = 40;
                 return;
@@ -88,7 +88,7 @@ namespace Model.Neg
             }
 
             string address = objSalesMan.Address;
-            if (address == null)
+            if (address == null || address.Trim().Equals(""))
             {
                 objSalesMan.State = 50;
                 return;
@@ -124,7 +124,7 @@ namespace Model.Neg
             SalesMan objSalesManAux = new SalesMan();
 
             string name = objSalesMan.Name;
-            if (name == null)
+            if (name == null || name.Trim().Equals(""))
             {
                 objSalesMan.State = 20;
                 return;
@@ -142,7 +142,7 @@ namespace Model.Neg
             }
 
             string cpf = objSalesMan.Cpf;
-            if (cpf == null)
+            if (cpf == null || cpf.Trim().Equals(""))
             {
                 objSalesMan.State = 30;
                 return;
@@ -159,7 +159,7 @@ namespace Model.Neg
             }
 
             string telephone = objSalesMan.Telephone;
-            if (telephone == null)
+            if (telephone == null || telephone.Trim().Equals(""))
             {
                 objSalesMan.State = 40;
                 return;
@@ -176,7 +176,7 @@ namespace Model.Neg
             }
 
             string address = objSalesMan.Address;
-            if (address == null)
+            if (address == null || address.Trim().Equals(""))
             {
                 objSalesMan.State = 50;
                 return;

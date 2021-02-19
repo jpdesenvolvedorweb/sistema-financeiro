@@ -20,11 +20,15 @@ namespace Model.DAO
 
         public void Create1(Client obj)
         {
-            string create = "insert into client(name, address, telephone, cpf) VALUES ('" + obj.Name + "', '" + obj.Address + "', '" + obj.Telephone + "', '" + obj.Cpf + "')";
+            string create = @"INSERT INTO client(name, address, telephone, cpf) VALUES (@NAME, @ADDRESS, @TELEPHONE, @CPF)";
 
             try
             {
                 command = new SqlCommand(create, objConexaoDB.getCon());
+                command.Parameters.AddWithValue("@NAME", obj.Name);
+                command.Parameters.AddWithValue("@ADDRESS", obj.Address);
+                command.Parameters.AddWithValue("@TELEPHONE", obj.Telephone);
+                command.Parameters.AddWithValue("@CPF", obj.Cpf);
                 objConexaoDB.getCon().Open();
                 command.ExecuteNonQuery();
             }
@@ -63,10 +67,11 @@ namespace Model.DAO
 
         public void Delete(Client obj)
         {
-            string delete = "delete from client where idClient = '" + obj.IdClient + "'";
+            string delete = @"DELETE FROM client WHERE idClient = @IDCLIENT";
             try
             {
                 command = new SqlCommand(delete, objConexaoDB.getCon());
+                command.Parameters.AddWithValue("@IDCLIENT", obj.IdClient);
                 objConexaoDB.getCon().Open();
                 command.ExecuteNonQuery();
             }
@@ -86,10 +91,11 @@ namespace Model.DAO
         {
             bool registers;
 
-            string find = "select * from client where idClient = '" + obj.IdClient + "' ";
+            string find = @"SELECT * FROM client(NOLOCK) WHERE idClient = @IDCLIENT";
             try
             {
                 command = new SqlCommand(find, objConexaoDB.getCon());
+                command.Parameters.AddWithValue("@IDCLIENT", obj.IdClient);
                 objConexaoDB.getCon().Open();
                 reader = command.ExecuteReader();
                 registers = reader.Read();
@@ -123,7 +129,7 @@ namespace Model.DAO
         public List<Client> FindAll()
         {
             List<Client> listClients = new List<Client>();
-            string findAll = "select * from client order by idClient asc";
+            string findAll = @"SELECT * FROM client(NOLOCK) ORDER BY idClient ASC";
             try
             {
                 command = new SqlCommand(findAll, objConexaoDB.getCon());
@@ -158,10 +164,15 @@ namespace Model.DAO
 
         public void Update(Client obj)
         {
-            string update = "update client set name= '" + obj.Name + "', address= '" + obj.Address + "', telephone= '" + obj.Telephone + "', cpf= '" + obj.Cpf + "' where idClient= '" + obj.IdClient + "'";
+            string update = @"UPDATE client SET name= @NAME, address= @ADDRESS, telephone= @TELEPHONE, cpf= @CPF WHERE idClient = @IDCLIENT";
             try
             {
                 command = new SqlCommand(update, objConexaoDB.getCon());
+                command.Parameters.AddWithValue("@NAME", obj.Name);
+                command.Parameters.AddWithValue("@ADDRESS", obj.Address);
+                command.Parameters.AddWithValue("@TELEPHONE", obj.Telephone);
+                command.Parameters.AddWithValue("@CPF", obj.Cpf);
+                command.Parameters.AddWithValue("@IDCLIENT", obj.IdClient);
                 objConexaoDB.getCon().Open();
                 command.ExecuteNonQuery();
             }
@@ -181,10 +192,11 @@ namespace Model.DAO
         public bool FindCustumerByCpf(Client obj)
         {
             bool registers;
-            string find = "Select * from client where cpf = '" + obj.Cpf + "'";
+            string find = "SELECT * FROM client (NOLOCK) WHERE cpf = @CPF";
             try
             {
                 command = new SqlCommand(find, objConexaoDB.getCon());
+                command.Parameters.AddWithValue("@CPF", obj.Cpf);
                 objConexaoDB.getCon().Open();
 
                 SqlDataReader reader = command.ExecuteReader();
@@ -220,10 +232,13 @@ namespace Model.DAO
         public List<Client> FindAllClient(Client obj)
         {
             List<Client> listClients = new List<Client>();
-            string findAll = "select * from client where name like '%" + obj.Name + "%' or cpf like '%" + obj.Cpf + "%' or idClient like  '%" + obj.IdClient + "%' ";
+            string findAll = "SELECT * FROM client (NOLOCK) WHERE name LIKE '% @NAME %' OR cpf LIKE '% @CPF %' OR idClient LIKE  '% @IDCLIENT %'";
             try
             {
                 command = new SqlCommand(findAll, objConexaoDB.getCon());
+                command.Parameters.AddWithValue("@NAME", obj.Name);
+                command.Parameters.AddWithValue("@CPF", obj.Cpf);
+                command.Parameters.AddWithValue("@IDCLIENT", obj.IdClient);
                 objConexaoDB.getCon().Open();
                 SqlDataReader reader = command.ExecuteReader();
                 while (reader.Read())

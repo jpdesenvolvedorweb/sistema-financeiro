@@ -1,4 +1,6 @@
-﻿namespace Model.Entity
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Model.Entity
 {
     public class Person
     {
@@ -22,6 +24,7 @@
             this.state = state;
         }
 
+        [Display(Name = "Nome")]
         public string Name
         {
             get => name;
@@ -32,11 +35,15 @@
             get => cpf;
             set => cpf = value;
         }
+
+        [Display(Name = "Endereço")]
         public string Address
         {
             get => address;
             set => address = value;
         }
+
+        [Display(Name = "Telefone")]
         public string Telephone
         {
             get => telephone;

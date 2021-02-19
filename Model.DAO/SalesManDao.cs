@@ -19,11 +19,16 @@ namespace Model.DAO
 
         public void Create(SalesMan obj)
         {
-            string create = "INSERT INTO salesman VALUES('" + obj.IdSalesMan + "', '" + obj.Name + "', '" + obj.Cpf + "', '" + obj.Telephone + "', '" + obj.Address + "')";
+            string create = @"INSERT INTO salesman VALUES(@IDSALESMAN, @NAME, @CPF, @TELEPHONE, @ADDRESS)";
 
             try
             {
                 command = new SqlCommand(create, objConexaoDB.getCon());
+                command.Parameters.AddWithValue("@IDSALESMAN", obj.IdSalesMan);
+                command.Parameters.AddWithValue("@NAME", obj.Name);
+                command.Parameters.AddWithValue("@CPF", obj.Cpf);
+                command.Parameters.AddWithValue("@TELEPHONE", obj.Telephone);
+                command.Parameters.AddWithValue("@ADDRESS", obj.Address);
                 objConexaoDB.getCon().Open();
                 command.ExecuteNonQuery();
             }
@@ -40,11 +45,12 @@ namespace Model.DAO
 
         public void Delete(SalesMan obj)
         {
-            string delete = "DELETE FROM salesman WHERE idSalesman = '" + obj.IdSalesMan + "'";
+            string delete = @"DELETE FROM salesman WHERE idSalesman = @IDSALESMAN";
 
             try
             {
                 command = new SqlCommand(delete, objConexaoDB.getCon());
+                command.Parameters.AddWithValue("@IDSALESMAN", obj.IdSalesMan);
                 objConexaoDB.getCon().Open();
                 command.ExecuteNonQuery();
             }
@@ -63,10 +69,11 @@ namespace Model.DAO
         {
             bool registers;
 
-            string find = "SELECT * FROM salesman WHERE idSalesman = '" + obj.IdSalesMan + "'";
+            string find = @"SELECT * FROM salesman (NOLOCK) WHERE idSalesman = @IDSALESMAN";
             try
             {
                 command = new SqlCommand(find, objConexaoDB.getCon());
+                command.Parameters.AddWithValue("@IDSALESMAN", obj.IdSalesMan);
                 objConexaoDB.getCon().Open();
                 reader = command.ExecuteReader();
                 registers = reader.Read();
@@ -99,7 +106,7 @@ namespace Model.DAO
 
         public List<SalesMan> FindAll()
         {
-            string findAll = "SELECT * FROM salesman ORDER BY name ASC";
+            string findAll = "SELECT * FROM salesman (NOLOCK) ORDER BY name ASC";
             List<SalesMan> list = new List<SalesMan>();
 
             try
@@ -132,11 +139,16 @@ namespace Model.DAO
 
         public void Update(SalesMan obj)
         {
-            string update = "update salesman set name= '" + obj.Name + "', telephone= '" + obj.Telephone + "', cpf= '" + obj.Cpf + "', address= '" + obj.Address + "' where idSalesman= '" + obj.IdSalesMan + "'";
+            string update = "UPDATE salesman SET name= @NAME, telephone= @TELEPHONE, cpf= @CPF, address= @ADDRESS WHERE idSalesman= @IDSALESMAN";
 
             try
             {
                 command = new SqlCommand(update, objConexaoDB.getCon());
+                command.Parameters.AddWithValue("@NAME", obj.Name);
+                command.Parameters.AddWithValue("@CPF", obj.Cpf);
+                command.Parameters.AddWithValue("@TELEPHONE", obj.Telephone);
+                command.Parameters.AddWithValue("@ADDRESS", obj.Address);
+                command.Parameters.AddWithValue("@IDSALESMAN", obj.IdSalesMan);
                 objConexaoDB.getCon().Open();
                 command.ExecuteNonQuery();
             }

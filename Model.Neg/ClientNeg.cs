@@ -19,7 +19,7 @@ namespace Model.Neg
             bool verification = true;
 
             string name = objClient.Name;
-            if(name == null)
+            if(name == null || name.Trim().Equals(""))
             {
                 objClient.State = 20;
                 return;
@@ -38,7 +38,7 @@ namespace Model.Neg
 
             //inicio da validação do cpf
             string cpf = objClient.Cpf;
-            if (cpf == null)
+            if (cpf == null || cpf.Trim().Equals(""))
             {
                 objClient.State = 50;
                 return;
@@ -52,14 +52,13 @@ namespace Model.Neg
                     objClient.State = 250;
                     return;
                 }
-
             }
 
             //fim da validãção do cpf
 
             //begin validar endereco retorna estado=6
             string address = objClient.Address;
-            if(address == null)
+            if(address == null || address.Trim().Equals(""))
             {
                 objClient.State = 60;
                 return;
@@ -78,7 +77,7 @@ namespace Model.Neg
 
             //begin validar telefone retorna estado=7
             string telephone = objClient.Telephone;
-            if(telephone == null)
+            if(telephone == null || telephone.Trim().Equals(""))
             {
                 objClient.State = 70;
                 return;
@@ -129,7 +128,7 @@ namespace Model.Neg
             //begin validar codigo retorna estado = 1
             string code = objClient.IdClient.ToString();
            // long id = 0;
-            if (code == null)
+            if (code == null || code.Trim().Equals(""))
             {
                 objClient.State = 10;
                 return;
@@ -157,7 +156,7 @@ namespace Model.Neg
 
             //begin validar nome retorna estado=2
             string name = objClient.Name;
-            if(name == null)
+            if(name == null || name.Trim().Equals(""))
             {
                 objClient.State = 20;
                 return;
@@ -176,7 +175,7 @@ namespace Model.Neg
 
             //inicio da validação do cpf
             string cpf = objClient.Cpf;
-            if (cpf == null)
+            if (cpf == null || cpf.Trim().Equals(""))
             {
                 objClient.State = 50;
                 return;
@@ -194,7 +193,7 @@ namespace Model.Neg
 
             //begin validar endereço retorna estado=6
             string address = objClient.Address;
-            if(address == null)
+            if(address == null || address.Trim().Equals(""))
             {
                 objClient.State = 60;
                 return;
@@ -213,7 +212,7 @@ namespace Model.Neg
 
             //begin validar telefone retorna estado=7
             string telephone = objClient.Telephone;
-            if(telephone == null)
+            if(telephone == null || telephone.Trim().Equals(""))
             {
                 objClient.State = 70;
                 return;

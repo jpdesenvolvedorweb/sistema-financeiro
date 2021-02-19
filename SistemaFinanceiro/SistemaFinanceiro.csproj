@@ -173,6 +173,7 @@
     <Compile Include="Controllers\InicioController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\ModePayController.cs" />
+    <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\SalesManController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -324,6 +325,11 @@
     <Content Include="Views\ModePay\Create.cshtml" />
     <Content Include="Views\ModePay\Edit.cshtml" />
     <Content Include="Views\ModePay\Delete.cshtml" />
+    <Content Include="Views\Product\Index.cshtml" />
+    <Content Include="Views\Product\Details.cshtml" />
+    <Content Include="Views\Product\Create.cshtml" />
+    <Content Include="Views\Product\Edit.cshtml" />
+    <Content Include="Views\Product\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

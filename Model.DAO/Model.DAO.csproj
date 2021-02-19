@@ -48,8 +48,10 @@
     <Compile Include="ConexaoDB.cs" />
     <Compile Include="Intermediate.cs" />
     <Compile Include="ModePayDao.cs" />
+    <Compile Include="ProductDao.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SaleDao.cs" />
     <Compile Include="SalesManDao.cs" />
   </ItemGroup>
   <ItemGroup>

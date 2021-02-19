@@ -1,4 +1,6 @@
-﻿namespace Model.Entity
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Model.Entity
 {
     public class ModePay
     {
@@ -25,18 +27,21 @@
             this.state = state;
         }
 
+        [Display(Name = "Código")]
         public int IdModePay
         {
             get => idModePay;
             set => idModePay = value;
         }
 
+        [Display(Name = "Nome")]
         public string Name
         {
             get => name;
             set => name = value;
         }
 
+        [Display(Name = "Outros Detalhes")]
         public string OtherDetails
         {
             get => otherDetails;

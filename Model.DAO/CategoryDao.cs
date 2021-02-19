@@ -19,11 +19,14 @@ namespace Model.DAO
 
         public void Create(Category obj)
         {
-            string create = "INSERT INTO category VALUES('" + obj.IdCategory + "','" + obj.Name + "', '" + obj.Description + "')";
+            string create = @"INSERT INTO category VALUES(@IDCATEGORY, @NAME, @DESCRIPTION)";
 
             try
             {
                 command = new SqlCommand(create, objConexaoDb.getCon());
+                command.Parameters.AddWithValue("@IDCATEGORY",obj.IdCategory);
+                command.Parameters.AddWithValue("@NAME", obj.Name);
+                command.Parameters.AddWithValue("@DESCRIPTION", obj.Description);
                 objConexaoDb.getCon().Open();
                 command.ExecuteNonQuery();
             }
@@ -40,11 +43,12 @@ namespace Model.DAO
 
         public void Delete(Category obj)
         {
-            string delete = "DELETE FROM category WHERE idCategory = '" + obj.IdCategory + "'";
+            string delete = @"DELETE FROM category WHERE idCategory = @IDCATEGORY";
 
             try
             {
                 command = new SqlCommand(delete, objConexaoDb.getCon());
+                command.Parameters.AddWithValue("@IDCATEGORY", obj.IdCategory);
                 objConexaoDb.getCon().Open();
                 command.ExecuteNonQuery();
 
@@ -64,11 +68,12 @@ namespace Model.DAO
         {
             bool registers;
 
-            string find = "SELECT * FROM category WHERE idCategory = '" + obj.IdCategory + "' ";
+            string find = @"SELECT * FROM category(NOLOCK) WHERE idCategory = @IDCATEGORY";
 
             try
             {
                 command = new SqlCommand(find, objConexaoDb.getCon());
+                command.Parameters.AddWithValue("@IDCATEGORY",obj.IdCategory);
                 objConexaoDb.getCon().Open();
                 reader = command.ExecuteReader();
                 registers = reader.Read();
@@ -102,11 +107,12 @@ namespace Model.DAO
         {
             bool registers;
 
-            string find = "SELECT * FROM category WHERE name = '" + obj.Name + "' ";
+            string find = @"SELECT * FROM category(NOLOCK) WHERE name = @NAME ";
 
             try
             {
                 command = new SqlCommand(find, objConexaoDb.getCon());
+                command.Parameters.AddWithValue("@NAME", obj.Name);
                 objConexaoDb.getCon().Open();
                 reader = command.ExecuteReader();
                 registers = reader.Read();
@@ -138,7 +144,7 @@ namespace Model.DAO
         public List<Category> FindAll()
         {
             List<Category> listCategories = new List<Category>();
-            string findAll = "SELECT * FROM category ORDER BY name ASC";
+            string findAll = "SELECT * FROM category(NOLOCK) ORDER BY name ASC";
 
             try
             {
@@ -169,11 +175,14 @@ namespace Model.DAO
 
         public void Update(Category obj)
         {
-            string update = "update category set name= '" + obj.Name + "', description= '" + obj.Description + "' where idCategory= '" + obj.IdCategory + "'";
+            string update = @"UPDATE category SET name= @NAME, description= @DESCRIPTION WHERE idCategory = @IDCATEGORY";
 
             try
             {
                 command = new SqlCommand(update, objConexaoDb.getCon());
+                command.Parameters.AddWithValue("@NAME", obj.Name);
+                command.Parameters.AddWithValue("@DESCRIPTION", obj.Description);
+                command.Parameters.AddWithValue("@IDCATEGORY", obj.IdCategory);
                 objConexaoDb.getCon().Open();
                 command.ExecuteNonQuery();
             }

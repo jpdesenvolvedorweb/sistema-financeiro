@@ -1,4 +1,6 @@
-﻿namespace Model.Entity
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Model.Entity
 {
     public class SalesMan : Person
     {
@@ -6,7 +8,9 @@
 
         public SalesMan()
         {
+
         }
+
         public SalesMan(string idSalesMan)
         {
             this.idSalesMan = idSalesMan;
@@ -18,6 +22,7 @@
             this.idSalesMan = idSalesMan;
         }
 
+        [Display(Name = "Código")]
         public string IdSalesMan
         {
             get => idSalesMan;

@@ -43,6 +43,7 @@ namespace SistemaFinanceiro.Controllers
         {
             MessageInitialRegister();
             objSalesManNeg.create(objSalesMan);
+            MessageErroRRegisters(objSalesMan);
             ModelState.Clear();
             return View("Create");
         }

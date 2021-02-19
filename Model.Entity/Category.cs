@@ -25,6 +25,7 @@ namespace Model.Entity
             this.description = description;
         }
 
+        [Display(Name = "Código")]
         public string IdCategory
         {
 
@@ -33,12 +34,14 @@ namespace Model.Entity
 
         }
 
+        [Display(Name = "Nome")]
         public string Name
         {
             get => name;
             set => name = value;
         }
 
+        [Display(Name = "Descrição")]
         public string Description
         {
             get => description;
