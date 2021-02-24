@@ -70,6 +70,7 @@ namespace Model.DAO
             bool registers;
 
             string find = @"SELECT * FROM salesman (NOLOCK) WHERE idSalesman = @IDSALESMAN";
+
             try
             {
                 command = new SqlCommand(find, objConexaoDB.getCon());

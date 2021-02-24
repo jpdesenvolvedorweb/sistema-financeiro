@@ -79,8 +79,8 @@ namespace Model.DAO
                 registers = reader.Read();
                 if (registers)
                 {
-                    obj.Name = reader[1].ToString();
-                    obj.Description = reader[2].ToString();
+                    obj.Name = reader["name"].ToString();
+                    obj.Description = reader["description"].ToString();
 
                     obj.State = 99;
                 }
@@ -118,8 +118,8 @@ namespace Model.DAO
                 registers = reader.Read();
                 if (registers)
                 {
-                    obj.Name = reader[1].ToString();
-                    obj.Description = reader[2].ToString();
+                    obj.Name = reader["name"].ToString();
+                    obj.Description = reader["description"].ToString();
 
                     obj.State = 99;
                 }
@@ -154,9 +154,9 @@ namespace Model.DAO
                 while (reader.Read())
                 {
                     Category obj = new Category();
-                    obj.IdCategory = reader[0].ToString();
-                    obj.Name = reader[1].ToString();
-                    obj.Description = reader[2].ToString();
+                    obj.IdCategory = reader["idCategory"].ToString();
+                    obj.Name = reader["name"].ToString();
+                    obj.Description = reader["description"].ToString();
 
                     listCategories.Add(obj);
                 }

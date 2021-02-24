@@ -263,7 +263,7 @@ namespace Model.Neg
             return objClientDao.FindAll();
         }
 
-        public List<Client> findAllClients(Client objClient)
+        public List<Client> findAllClient(Client objClient)
         {
             return objClientDao.FindAllClient(objClient);
         }

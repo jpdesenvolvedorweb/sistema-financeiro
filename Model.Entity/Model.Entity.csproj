@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="Category.cs" />
     <Compile Include="Client.cs" />
+    <Compile Include="Exceptions\Exception.cs" />
     <Compile Include="ModePay.cs" />
     <Compile Include="Person.cs" />
     <Compile Include="Product.cs" />

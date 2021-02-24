@@ -102,7 +102,7 @@ namespace SistemaFinanceiro.Controllers
             objClient.IdClient = txtclient;
             objClient.Cpf = txtcpf;
 
-            List<Client> client = objClientNeg.findAllClients(objClient);
+            List<Client> client = objClientNeg.findAllClient(objClient);
             return View(client);
         }
 

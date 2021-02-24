@@ -101,10 +101,10 @@ namespace Model.DAO
                 registers = reader.Read();
                 if (registers)
                 {
-                    obj.Name = reader[1].ToString();
-                    obj.Address = reader[2].ToString();
-                    obj.Telephone = reader[3].ToString();
-                    obj.Cpf = reader[4].ToString();
+                    obj.Name = reader["name"].ToString();
+                    obj.Address = reader["address"].ToString();
+                    obj.Telephone = reader["telephone"].ToString();
+                    obj.Cpf = reader["cpf"].ToString();
                     obj.State = 99;
                 }
                 else
@@ -138,11 +138,11 @@ namespace Model.DAO
                 while (reader.Read())
                 {
                     Client obj = new Client();
-                    obj.IdClient = Convert.ToInt64(reader[0].ToString());
-                    obj.Name = reader[1].ToString();
-                    obj.Address = reader[2].ToString();
-                    obj.Telephone = reader[3].ToString();
-                    obj.Cpf = reader[4].ToString();
+                    obj.IdClient = Convert.ToInt64(reader["idClient"].ToString());
+                    obj.Name = reader["name"].ToString();
+                    obj.Address = reader["address"].ToString();
+                    obj.Telephone = reader["telephone"].ToString();
+                    obj.Cpf = reader["cpf"].ToString();
                     listClients.Add(obj);
                 }
 
@@ -203,10 +203,10 @@ namespace Model.DAO
                 registers = reader.Read();
                 if (registers)
                 {
-                    obj.Name = reader[1].ToString();
-                    obj.Address = reader[2].ToString();
-                    obj.Telephone = reader[3].ToString();
-                    obj.Cpf = reader[4].ToString();
+                    obj.Name = reader["name"].ToString();
+                    obj.Address = reader["address"].ToString();
+                    obj.Telephone = reader["telephone"].ToString();
+                    obj.Cpf = reader["cpf"].ToString();
 
                     obj.State = 99;
                 }
@@ -232,7 +232,7 @@ namespace Model.DAO
         public List<Client> FindAllClient(Client obj)
         {
             List<Client> listClients = new List<Client>();
-            string findAll = "SELECT * FROM client (NOLOCK) WHERE name LIKE '% @NAME %' OR cpf LIKE '% @CPF %' OR idClient LIKE  '% @IDCLIENT %'";
+            string findAll = @"SELECT * FROM client (NOLOCK) WHERE name LIKE '%' + @NAME + '%' OR cpf = @CPF OR idClient = @IDCLIENT";
             try
             {
                 command = new SqlCommand(findAll, objConexaoDB.getCon());
@@ -244,11 +244,11 @@ namespace Model.DAO
                 while (reader.Read())
                 {
                     Client objClient = new Client();
-                    objClient.IdClient = Convert.ToInt64(reader[0].ToString());
-                    objClient.Name = reader[1].ToString();
-                    objClient.Address = reader[2].ToString();
-                    objClient.Telephone = reader[3].ToString();
-                    objClient.Cpf = reader[4].ToString();
+                    objClient.IdClient = Convert.ToInt64(reader["idClient"].ToString());
+                    objClient.Name = reader["name"].ToString();
+                    objClient.Address = reader["address"].ToString();
+                    objClient.Telephone = reader["telephone"].ToString();
+                    objClient.Cpf = reader["cpf"].ToString();
                     listClients.Add(objClient);
 
                 }

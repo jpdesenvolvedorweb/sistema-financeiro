@@ -79,9 +79,9 @@ namespace Model.DAO
                 registers = reader.Read();
                 if (registers)
                 {
-                    obj.Name = reader[1].ToString();
-                    obj.UnitPrice = Convert.ToDouble(reader[2].ToString());
-                    obj.IdCategory = reader[3].ToString();
+                    obj.Name = reader["name"].ToString();
+                    obj.UnitPrice = Convert.ToDouble(reader["unitPrice"].ToString());
+                    obj.IdCategory = reader["idCategory"].ToString();
                     obj.State = 99;
                 }
                 else
@@ -116,10 +116,10 @@ namespace Model.DAO
                 registers = reader.Read();
                 if (registers)
                 {
-                    obj.IdProduct = reader[0].ToString();
-                    obj.Name = reader[1].ToString();
-                    obj.UnitPrice = Convert.ToDouble(reader[2].ToString());
-                    obj.IdCategory = reader[3].ToString();
+                    obj.IdProduct = reader["idProduct"].ToString();
+                    obj.Name = reader["name"].ToString();
+                    obj.UnitPrice = Convert.ToDouble(reader["unitPrice"].ToString());
+                    obj.IdCategory = reader["idCategory"].ToString();
                     obj.State = 99;
                 }
                 else
@@ -153,10 +153,10 @@ namespace Model.DAO
                 while (reader.Read())
                 {
                     Product product = new Product();
-                    product.IdProduct = reader[0].ToString();
-                    product.Name = reader[1].ToString();
-                    product.UnitPrice = Convert.ToDouble(reader[2].ToString());
-                    product.IdCategory = reader[3].ToString();
+                    product.IdProduct = reader["idProduct"].ToString();
+                    product.Name = reader["name"].ToString();
+                    product.UnitPrice = Convert.ToDouble(reader["unitPrice"].ToString());
+                    product.IdCategory = reader["idCategory"].ToString();
 
                     list.Add(product);
                 }
@@ -188,10 +188,10 @@ namespace Model.DAO
                 while (reader.Read())
                 {
                     Product productAux = new Product();
-                    productAux.IdProduct = reader[0].ToString();
-                    productAux.Name = reader[1].ToString();
-                    productAux.UnitPrice = Convert.ToDouble(reader[2].ToString());
-                    productAux.IdCategory = reader[3].ToString();
+                    productAux.IdProduct = reader["idProduct"].ToString();
+                    productAux.Name = reader["name"].ToString();
+                    productAux.UnitPrice = Convert.ToDouble(reader["unitPrice"].ToString());
+                    productAux.IdCategory = reader["idCategory"].ToString();
 
                     list.Add(productAux);
                 }

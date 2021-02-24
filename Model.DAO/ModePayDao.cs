@@ -77,8 +77,8 @@ namespace Model.DAO
                 registers = reader.Read();
                 if (registers)
                 {
-                    obj.Name = reader[1].ToString();
-                    obj.OtherDetails = reader[2].ToString();
+                    obj.Name = reader["name"].ToString();
+                    obj.OtherDetails = reader["otherDetails"].ToString();
                     obj.State = 99;
                 }
                 else
@@ -112,9 +112,9 @@ namespace Model.DAO
                 while (reader.Read())
                 {
                     ModePay objModePayAux = new ModePay();
-                    objModePayAux.IdModePay = Convert.ToInt32(reader[0].ToString());
-                    objModePayAux.Name = reader[1].ToString();
-                    objModePayAux.OtherDetails = reader[2].ToString();
+                    objModePayAux.IdModePay = Convert.ToInt32(reader["idPay"].ToString());
+                    objModePayAux.Name = reader["name"].ToString();
+                    objModePayAux.OtherDetails = reader["otherDetails"].ToString();
 
                     list.Add(objModePayAux);
                 }
