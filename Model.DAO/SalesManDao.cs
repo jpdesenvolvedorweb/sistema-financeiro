@@ -1,5 +1,6 @@
 ﻿using Model.Dao;
 using Model.Entity;
+using Model.Entity.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -8,159 +9,157 @@ namespace Model.DAO
 {
     public class SalesManDao : Intermediate<SalesMan>
     {
-        private ConexaoDB objConexaoDB;
+        private ConexaoDB con;
         private SqlCommand command;
         private SqlDataReader reader;
 
         public SalesManDao()
         {
-            objConexaoDB = ConexaoDB.knowState();
+            con = ConexaoDB.knowState();
         }
 
-        public void Create(SalesMan obj)
+        public void Create(SalesMan salesMan)
         {
-            string create = @"INSERT INTO salesman VALUES(@IDSALESMAN, @NAME, @CPF, @TELEPHONE, @ADDRESS)";
+            string script = @"INSERT INTO salesman VALUES(@IDSALESMAN, @NAME, @CPF, @TELEPHONE, @ADDRESS)";
 
             try
             {
-                command = new SqlCommand(create, objConexaoDB.getCon());
-                command.Parameters.AddWithValue("@IDSALESMAN", obj.IdSalesMan);
-                command.Parameters.AddWithValue("@NAME", obj.Name);
-                command.Parameters.AddWithValue("@CPF", obj.Cpf);
-                command.Parameters.AddWithValue("@TELEPHONE", obj.Telephone);
-                command.Parameters.AddWithValue("@ADDRESS", obj.Address);
-                objConexaoDB.getCon().Open();
+                command = new SqlCommand(script, con.getCon());
+                command.Parameters.AddWithValue("@IDSALESMAN", salesMan.IdSalesMan);
+                command.Parameters.AddWithValue("@NAME", salesMan.Name);
+                command.Parameters.AddWithValue("@CPF", salesMan.Cpf);
+                command.Parameters.AddWithValue("@TELEPHONE", salesMan.Telephone);
+                command.Parameters.AddWithValue("@ADDRESS", salesMan.Address);
+                con.getCon().Open();
                 command.ExecuteNonQuery();
             }
-            catch (Exception)
+            catch (Exception erro)
             {
-                throw;
+                Message.MessageError(erro.Message);
             }
             finally
             {
-                objConexaoDB.getCon().Close();
-                objConexaoDB.CloseDB();
+                con.getCon().Close();
+                con.CloseDB();
             }
         }
 
-        public void Delete(SalesMan obj)
+        public void Delete(SalesMan salesMan)
         {
-            string delete = @"DELETE FROM salesman WHERE idSalesman = @IDSALESMAN";
+            string script = @"DELETE FROM salesman WHERE idSalesman = @IDSALESMAN";
 
             try
             {
-                command = new SqlCommand(delete, objConexaoDB.getCon());
-                command.Parameters.AddWithValue("@IDSALESMAN", obj.IdSalesMan);
-                objConexaoDB.getCon().Open();
+                command = new SqlCommand(script, con.getCon());
+                command.Parameters.AddWithValue("@IDSALESMAN", salesMan.IdSalesMan);
+                con.getCon().Open();
                 command.ExecuteNonQuery();
             }
-            catch (Exception)
+            catch (Exception erro)
             {
-                obj.State = 1;
+                Message.MessageError(erro.Message);
             }
             finally
             {
-                objConexaoDB.getCon().Close();
-                objConexaoDB.CloseDB();
+                con.getCon().Close();
+                con.CloseDB();
             }
         }
 
-        public bool Find(SalesMan obj)
+        public bool Find(SalesMan salesMan)
         {
-            bool registers;
+            bool registers = true;
 
-            string find = @"SELECT * FROM salesman (NOLOCK) WHERE idSalesman = @IDSALESMAN";
+            string script = @"SELECT * FROM salesman (NOLOCK) WHERE idSalesman = @IDSALESMAN";
 
             try
             {
-                command = new SqlCommand(find, objConexaoDB.getCon());
-                command.Parameters.AddWithValue("@IDSALESMAN", obj.IdSalesMan);
-                objConexaoDB.getCon().Open();
+                command = new SqlCommand(script, con.getCon());
+                command.Parameters.AddWithValue("@IDSALESMAN", salesMan.IdSalesMan);
+                con.getCon().Open();
                 reader = command.ExecuteReader();
                 registers = reader.Read();
                 if (registers)
                 {
-                    obj.Name = reader[1].ToString();
-                    obj.Cpf = reader[2].ToString();
-                    obj.Telephone = reader[3].ToString();
-                    obj.Address = reader[4].ToString();
-                    obj.State = 99;
+                    salesMan.Name = reader["name"].ToString();
+                    salesMan.Cpf = reader["cpf"].ToString();
+                    salesMan.Telephone = reader["telephone"].ToString();
+                    salesMan.Address = reader["address"].ToString();
+                    salesMan.State = 99;
                 }
                 else
                 {
-                    obj.State = 1;
+                    salesMan.State = 1;
                 }
             }
-            catch (Exception)
+            catch (Exception erro)
             {
-                throw;
+                Message.MessageError(erro.Message);
             }
             finally
             {
-                objConexaoDB.getCon().Close();
-                objConexaoDB.CloseDB();
+                con.getCon().Close();
+                con.CloseDB();
             }
-
             return registers;
-
         }
 
         public List<SalesMan> FindAll()
         {
-            string findAll = "SELECT * FROM salesman (NOLOCK) ORDER BY name ASC";
             List<SalesMan> list = new List<SalesMan>();
+            string script = "SELECT * FROM salesman (NOLOCK) ORDER BY name ASC";
 
             try
             {
-                command = new SqlCommand(findAll, objConexaoDB.getCon());
-                objConexaoDB.getCon().Open();
+                command = new SqlCommand(script, con.getCon());
+                con.getCon().Open();
                 reader = command.ExecuteReader();
                 while (reader.Read())
                 {
                     SalesMan salesMan = new SalesMan();
-                    salesMan.IdSalesMan = reader[0].ToString();
-                    salesMan.Name = reader[1].ToString();
-                    salesMan.Cpf = reader[2].ToString();
-                    salesMan.Telephone = reader[3].ToString();
-                    salesMan.Address = reader[4].ToString();
+                    salesMan.IdSalesMan = reader["idSalesman"].ToString();
+                    salesMan.Name = reader["name"].ToString();
+                    salesMan.Cpf = reader["cpf"].ToString();
+                    salesMan.Telephone = reader["telephone"].ToString();
+                    salesMan.Address = reader["address"].ToString();
                     list.Add(salesMan);
                 }
             }
-            catch (Exception)
+            catch (Exception erro)
             {
-                throw;
+                Message.MessageError(erro.Message);
             }
             finally
             {
-                objConexaoDB.getCon().Close();
-                objConexaoDB.CloseDB();
+                con.getCon().Close();
+                con.CloseDB();
             }
             return list;
         }
 
-        public void Update(SalesMan obj)
+        public void Update(SalesMan salesMan)
         {
-            string update = "UPDATE salesman SET name= @NAME, telephone= @TELEPHONE, cpf= @CPF, address= @ADDRESS WHERE idSalesman= @IDSALESMAN";
+            string script = "UPDATE salesman SET name= @NAME, telephone= @TELEPHONE, cpf= @CPF, address= @ADDRESS WHERE idSalesman= @IDSALESMAN";
 
             try
             {
-                command = new SqlCommand(update, objConexaoDB.getCon());
-                command.Parameters.AddWithValue("@NAME", obj.Name);
-                command.Parameters.AddWithValue("@CPF", obj.Cpf);
-                command.Parameters.AddWithValue("@TELEPHONE", obj.Telephone);
-                command.Parameters.AddWithValue("@ADDRESS", obj.Address);
-                command.Parameters.AddWithValue("@IDSALESMAN", obj.IdSalesMan);
-                objConexaoDB.getCon().Open();
+                command = new SqlCommand(script, con.getCon());
+                command.Parameters.AddWithValue("@NAME", salesMan.Name);
+                command.Parameters.AddWithValue("@CPF", salesMan.Cpf);
+                command.Parameters.AddWithValue("@TELEPHONE", salesMan.Telephone);
+                command.Parameters.AddWithValue("@ADDRESS", salesMan.Address);
+                command.Parameters.AddWithValue("@IDSALESMAN", salesMan.IdSalesMan);
+                con.getCon().Open();
                 command.ExecuteNonQuery();
             }
-            catch (Exception)
+            catch (Exception erro)
             {
-                obj.State = 1000;
+                Message.MessageError(erro.Message);
             }
             finally
             {
-                objConexaoDB.getCon().Close();
-                objConexaoDB.CloseDB();
+                con.getCon().Close();
+                con.CloseDB();
             }
         }
     }

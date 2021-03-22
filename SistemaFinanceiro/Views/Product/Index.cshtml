@@ -1,4 +1,4 @@
-﻿@model List<Model.Entity.Product>
+﻿@model List<Model.Entity.ProductList>
 @{
     ViewBag.Title = "Lista de Produtos";
 }
@@ -22,16 +22,16 @@
 
     </thead>
     <tbody>
-        @foreach (var objProduct in Model)
+        @foreach (var Product in Model)
         {
             <tr>
-                <td>@objProduct.IdProduct</td>
-                <td>@objProduct.Name</td>
-                <td>@objProduct.UnitPrice</td>
-                <td>@objProduct.IdCategory</td>
-                <td><a class="btn btn-success" href="~/Product/Details/@objProduct.IdProduct"><span class="glyphicon glyphicon-eye-open"></span></a></td>
-                <td><a class="btn btn-info" href="~/Product/Edit/@objProduct.IdProduct"><span class="fa fa-edit"></span></a></td>
-                <td><a class="btn btn-danger" href="~/Product/Delete/@objProduct.IdProduct"><span class="fa fa-book"></span></a></td>
+                <td>@Product.IdProduct</td>
+                <td>@Product.Name</td>
+                <td>@Product.UnitPrice</td>
+                <td>@Product.NameProduct</td>
+                <td><a class="btn btn-success" href="~/Product/Details/@Product.IdProduct"><span class="glyphicon glyphicon-eye-open"></span></a></td>
+                <td><a class="btn btn-info" href="~/Product/Edit/@Product.IdProduct"><span class="fa fa-edit"></span></a></td>
+                <td><a class="btn btn-danger" href="~/Product/Delete/@Product.IdProduct"><span class="fa fa-book"></span></a></td>
             </tr>
         }
     </tbody>

@@ -4,7 +4,7 @@ namespace Model.Dao
 {
     public class ConexaoDB
     {
-        private static ConexaoDB objConexaoDB = null;
+        private static ConexaoDB conexaoDB = null;
         private SqlConnection con;
 
         private ConexaoDB()
@@ -14,11 +14,11 @@ namespace Model.Dao
 
         public static ConexaoDB knowState()
         {
-            if (objConexaoDB == null)
+            if (conexaoDB == null)
             {
-                objConexaoDB = new ConexaoDB();
+                conexaoDB = new ConexaoDB();
             }
-            return objConexaoDB;
+            return conexaoDB;
         }
 
         public SqlConnection getCon()
@@ -28,7 +28,7 @@ namespace Model.Dao
 
         public void CloseDB()
         {
-            objConexaoDB = null;
+            conexaoDB = null;
         }
     }
 }

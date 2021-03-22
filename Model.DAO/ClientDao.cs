@@ -1,5 +1,6 @@
 ﻿using Model.Dao;
 using Model.Entity;
+using Model.Entity.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -9,118 +10,123 @@ namespace Model.DAO
    public class ClientDao : Intermediate<Client>
     {
 
-        private ConexaoDB objConexaoDB;
+        private ConexaoDB con;
         private SqlCommand command;
         private SqlDataReader reader;
 
         public ClientDao()
         {
-            objConexaoDB = ConexaoDB.knowState();
+            con = ConexaoDB.knowState();
         }
 
-        public void Create1(Client obj)
+        public void Create1(Client client)
         {
-            string create = @"INSERT INTO client(name, address, telephone, cpf) VALUES (@NAME, @ADDRESS, @TELEPHONE, @CPF)";
+            string script = @"INSERT INTO client(name, address, telephone, cpf) 
+                              VALUES (@NAME, @ADDRESS, @TELEPHONE, @CPF)";
 
             try
             {
-                command = new SqlCommand(create, objConexaoDB.getCon());
-                command.Parameters.AddWithValue("@NAME", obj.Name);
-                command.Parameters.AddWithValue("@ADDRESS", obj.Address);
-                command.Parameters.AddWithValue("@TELEPHONE", obj.Telephone);
-                command.Parameters.AddWithValue("@CPF", obj.Cpf);
-                objConexaoDB.getCon().Open();
+                command = new SqlCommand(script, con.getCon());
+                command.Parameters.AddWithValue("@NAME", client.Name);
+                command.Parameters.AddWithValue("@ADDRESS", client.Address);
+                command.Parameters.AddWithValue("@TELEPHONE", client.Telephone);
+                command.Parameters.AddWithValue("@CPF", client.Cpf);
+                con.getCon().Open();
                 command.ExecuteNonQuery();
             }
-            catch (Exception)
+            catch (Exception erro)
             {
-                obj.State = 1;
+                Message.MessageError(erro.Message);
             }
             finally
             {
-                objConexaoDB.getCon().Close();
-                objConexaoDB.CloseDB();
+                con.getCon().Close();
+                con.CloseDB();
             }
         }
 
-        public void Create(Client obj)
+        public void Create(Client client)
         {
-            string create = " sp_client_adc" + obj.Name + "," + obj.Address + "," + obj.Telephone + "," + obj.Cpf + "";
+            string script = " sp_client_adc @NAME, @ADDRESS, @TELEPHONE, @CPF";
 
             try
             {
-                command = new SqlCommand(create, objConexaoDB.getCon());
-                objConexaoDB.getCon().Open();
+                command = new SqlCommand(script, con.getCon());
+                command.Parameters.AddWithValue("@NAME", client.Name);
+                command.Parameters.AddWithValue("@ADDRESS", client.Address);
+                command.Parameters.AddWithValue("@TELEPHONE", client.Telephone);
+                command.Parameters.AddWithValue("@CPF", client.Cpf);
+                
+                con.getCon().Open();
                 command.ExecuteNonQuery();
             }
-            catch (Exception)
+            catch (Exception erro)
             {
 
-                obj.State = 1;
+                Message.MessageError(erro.Message);
             }
             finally
             {
-                objConexaoDB.getCon().Close();
-                objConexaoDB.CloseDB();
+                con.getCon().Close();
+                con.CloseDB();
             }
         }
 
-        public void Delete(Client obj)
+        public void Delete(Client client)
         {
-            string delete = @"DELETE FROM client WHERE idClient = @IDCLIENT";
+            string script = @"DELETE FROM client WHERE idClient = @IDCLIENT";
             try
             {
-                command = new SqlCommand(delete, objConexaoDB.getCon());
-                command.Parameters.AddWithValue("@IDCLIENT", obj.IdClient);
-                objConexaoDB.getCon().Open();
+                command = new SqlCommand(script, con.getCon());
+                command.Parameters.AddWithValue("@IDCLIENT", client.IdClient);
+                con.getCon().Open();
                 command.ExecuteNonQuery();
             }
-            catch (Exception)
+            catch (Exception erro)
             {
 
-                obj.State = 1;
+                Message.MessageError(erro.Message);
             }
             finally
             {
-                objConexaoDB.getCon().Close();
-                objConexaoDB.CloseDB();
+                con.getCon().Close();
+                con.CloseDB();
             }
         }
 
-        public bool Find(Client obj)
+        public bool Find(Client client)
         {
-            bool registers;
+            bool registers = true;
 
-            string find = @"SELECT * FROM client(NOLOCK) WHERE idClient = @IDCLIENT";
+            string script = @"SELECT * FROM client(NOLOCK) WHERE idClient = @IDCLIENT";
             try
             {
-                command = new SqlCommand(find, objConexaoDB.getCon());
-                command.Parameters.AddWithValue("@IDCLIENT", obj.IdClient);
-                objConexaoDB.getCon().Open();
+                command = new SqlCommand(script, con.getCon());
+                command.Parameters.AddWithValue("@IDCLIENT", client.IdClient);
+                con.getCon().Open();
                 reader = command.ExecuteReader();
                 registers = reader.Read();
                 if (registers)
                 {
-                    obj.Name = reader["name"].ToString();
-                    obj.Address = reader["address"].ToString();
-                    obj.Telephone = reader["telephone"].ToString();
-                    obj.Cpf = reader["cpf"].ToString();
-                    obj.State = 99;
+                    client.Name = reader["name"].ToString();
+                    client.Address = reader["address"].ToString();
+                    client.Telephone = reader["telephone"].ToString();
+                    client.Cpf = reader["cpf"].ToString();
+                    client.State = 99;
                 }
                 else
                 {
-                    obj.State = 1;
+                    client.State = 1;
                 }
             }
-            catch (Exception)
+            catch (Exception erro)
             {
-
-                throw;
+                Message.MessageError(erro.Message);
             }
             finally
             {
-                objConexaoDB.getCon().Close();
-                objConexaoDB.CloseDB();
+                con.getCon().Close();
+                con.CloseDB();
             }
 
             return registers;
@@ -129,141 +135,141 @@ namespace Model.DAO
         public List<Client> FindAll()
         {
             List<Client> listClients = new List<Client>();
-            string findAll = @"SELECT * FROM client(NOLOCK) ORDER BY idClient ASC";
+            string script = @"SELECT * FROM client(NOLOCK) ORDER BY idClient ASC";
             try
             {
-                command = new SqlCommand(findAll, objConexaoDB.getCon());
-                objConexaoDB.getCon().Open();
+                command = new SqlCommand(script, con.getCon());
+                con.getCon().Open();
                 reader = command.ExecuteReader();
                 while (reader.Read())
                 {
-                    Client obj = new Client();
-                    obj.IdClient = Convert.ToInt64(reader["idClient"].ToString());
-                    obj.Name = reader["name"].ToString();
-                    obj.Address = reader["address"].ToString();
-                    obj.Telephone = reader["telephone"].ToString();
-                    obj.Cpf = reader["cpf"].ToString();
-                    listClients.Add(obj);
+                    Client client = new Client();
+                    client.IdClient = Convert.ToInt64(reader["idClient"].ToString());
+                    client.Name = reader["name"].ToString();
+                    client.Address = reader["address"].ToString();
+                    client.Telephone = reader["telephone"].ToString();
+                    client.Cpf = reader["cpf"].ToString();
+                    listClients.Add(client);
                 }
 
 
             }
-            catch (Exception)
+            catch (Exception erro)
             {
-
-                throw;
+                Message.MessageError(erro.Message);
             }
             finally
             {
-                objConexaoDB.getCon().Close();
-                objConexaoDB.CloseDB();
+                con.getCon().Close();
+                con.CloseDB();
             }
 
             return listClients;
         }
 
-        public void Update(Client obj)
+        public void Update(Client client)
         {
-            string update = @"UPDATE client SET name= @NAME, address= @ADDRESS, telephone= @TELEPHONE, cpf= @CPF WHERE idClient = @IDCLIENT";
+            string script = @"UPDATE client SET name= @NAME, 
+                                                address= @ADDRESS, 
+                                                telephone= @TELEPHONE, 
+                                                cpf= @CPF 
+                              WHERE idClient = @IDCLIENT";
             try
             {
-                command = new SqlCommand(update, objConexaoDB.getCon());
-                command.Parameters.AddWithValue("@NAME", obj.Name);
-                command.Parameters.AddWithValue("@ADDRESS", obj.Address);
-                command.Parameters.AddWithValue("@TELEPHONE", obj.Telephone);
-                command.Parameters.AddWithValue("@CPF", obj.Cpf);
-                command.Parameters.AddWithValue("@IDCLIENT", obj.IdClient);
-                objConexaoDB.getCon().Open();
+                command = new SqlCommand(script, con.getCon());
+                command.Parameters.AddWithValue("@NAME", client.Name);
+                command.Parameters.AddWithValue("@ADDRESS", client.Address);
+                command.Parameters.AddWithValue("@TELEPHONE", client.Telephone);
+                command.Parameters.AddWithValue("@CPF", client.Cpf);
+                command.Parameters.AddWithValue("@IDCLIENT", client.IdClient);
+                con.getCon().Open();
                 command.ExecuteNonQuery();
             }
-            catch (Exception)
+            catch (Exception erro)
             {
-
-                obj.State = 1;
+                Message.MessageError(erro.Message);
             }
             finally
             {
-                objConexaoDB.getCon().Close();
-                objConexaoDB.CloseDB();
+                con.getCon().Close();
+                con.CloseDB();
             }
         }
 
         //OTHER ADDITIONAL IMPLEMENTATIONS
-        public bool FindCustumerByCpf(Client obj)
+        public bool FindCustumerByCpf(Client client)
         {
-            bool registers;
-            string find = "SELECT * FROM client (NOLOCK) WHERE cpf = @CPF";
+            bool registers = true;
+            string script = "SELECT * FROM client (NOLOCK) WHERE cpf = @CPF";
             try
             {
-                command = new SqlCommand(find, objConexaoDB.getCon());
-                command.Parameters.AddWithValue("@CPF", obj.Cpf);
-                objConexaoDB.getCon().Open();
+                command = new SqlCommand(script, con.getCon());
+                command.Parameters.AddWithValue("@CPF", client.Cpf);
+                con.getCon().Open();
 
-                SqlDataReader reader = command.ExecuteReader();
+                reader = command.ExecuteReader();
                 registers = reader.Read();
                 if (registers)
                 {
-                    obj.Name = reader["name"].ToString();
-                    obj.Address = reader["address"].ToString();
-                    obj.Telephone = reader["telephone"].ToString();
-                    obj.Cpf = reader["cpf"].ToString();
+                    client.Name = reader["name"].ToString();
+                    client.Address = reader["address"].ToString();
+                    client.Telephone = reader["telephone"].ToString();
+                    client.Cpf = reader["cpf"].ToString();
 
-                    obj.State = 99;
+                    client.State = 99;
                 }
                 else
                 {
-                    obj.State = 1;
+                    client.State = 1;
                 }
             }
-            catch (Exception)
+            catch (Exception erro)
             {
 
-                throw;
+                Message.MessageError(erro.Message);
             }
             finally
             {
-                objConexaoDB.getCon().Close();
-                objConexaoDB.CloseDB();
+                con.getCon().Close();
+                con.CloseDB();
             }
 
             return registers;
         }
 
-        public List<Client> FindAllClient(Client obj)
+        public List<Client> FindAllClient(Client client)
         {
             List<Client> listClients = new List<Client>();
-            string findAll = @"SELECT * FROM client (NOLOCK) WHERE name LIKE '%' + @NAME + '%' OR cpf = @CPF OR idClient = @IDCLIENT";
+            string script = @"SELECT * FROM client (NOLOCK)
+                              WHERE name LIKE '%' + @NAME + '%' OR cpf = @CPF OR idClient = @IDCLIENT";
             try
             {
-                command = new SqlCommand(findAll, objConexaoDB.getCon());
-                command.Parameters.AddWithValue("@NAME", obj.Name);
-                command.Parameters.AddWithValue("@CPF", obj.Cpf);
-                command.Parameters.AddWithValue("@IDCLIENT", obj.IdClient);
-                objConexaoDB.getCon().Open();
-                SqlDataReader reader = command.ExecuteReader();
+                command = new SqlCommand(script, con.getCon());
+                command.Parameters.AddWithValue("@NAME", client.Name);
+                command.Parameters.AddWithValue("@CPF", client.Cpf);
+                command.Parameters.AddWithValue("@IDCLIENT", client.IdClient);
+                con.getCon().Open();
+                reader = command.ExecuteReader();
                 while (reader.Read())
                 {
-                    Client objClient = new Client();
-                    objClient.IdClient = Convert.ToInt64(reader["idClient"].ToString());
-                    objClient.Name = reader["name"].ToString();
-                    objClient.Address = reader["address"].ToString();
-                    objClient.Telephone = reader["telephone"].ToString();
-                    objClient.Cpf = reader["cpf"].ToString();
-                    listClients.Add(objClient);
+                    client.IdClient = Convert.ToInt64(reader["idClient"].ToString());
+                    client.Name = reader["name"].ToString();
+                    client.Address = reader["address"].ToString();
+                    client.Telephone = reader["telephone"].ToString();
+                    client.Cpf = reader["cpf"].ToString();
+                    listClients.Add(client);
 
                 }
             }
-            catch (Exception)
+            catch (Exception erro)
             {
-
-                throw;
+                Message.MessageError(erro.Message);
             }
             finally
             {
-                objConexaoDB.getCon().Close();
-                objConexaoDB.CloseDB();
+                con.getCon().Close();
+                con.CloseDB();
             }
-
             return listClients;
         }
     }

@@ -1,5 +1,6 @@
 ﻿using Model.Dao;
 using Model.Entity;
+using Model.Entity.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -8,133 +9,132 @@ namespace Model.DAO
 {
     public class ProductDao : Intermediate<Product>
     {
-        private ConexaoDB objConexaoDB;
+        private ConexaoDB con;
         private SqlCommand command;
         private SqlDataReader reader;
 
         public ProductDao()
         {
-            objConexaoDB = ConexaoDB.knowState();
+            con = ConexaoDB.knowState();
         }
 
-        public void Create(Product obj)
+        public void Create(Product product)
         {
-            string create = @"INSERT INTO product VALUES(@IDPRODUCT, @NAME, @UNITPRICE, @IDCATEGORY)";
+            string script = @"INSERT INTO product VALUES(@IDPRODUCT, @NAME, @UNITPRICE, @IDCATEGORY)";
 
             try
             {
-                command = new SqlCommand(create, objConexaoDB.getCon());
-                command.Parameters.AddWithValue("@IDPRODUCT", obj.IdProduct);
-                command.Parameters.AddWithValue("@NAME", obj.Name);
-                command.Parameters.AddWithValue("@UNITPRICE", obj.UnitPrice);
-                command.Parameters.AddWithValue("@IDCATEGORY", obj.IdCategory);
-                objConexaoDB.getCon().Open();
+                command = new SqlCommand(script, con.getCon());
+                command.Parameters.AddWithValue("@IDPRODUCT", product.IdProduct);
+                command.Parameters.AddWithValue("@NAME", product.Name);
+                command.Parameters.AddWithValue("@UNITPRICE", product.UnitPrice);
+                command.Parameters.AddWithValue("@IDCATEGORY", product.IdCategory);
+                con.getCon().Open();
                 command.ExecuteNonQuery();
             }
-            catch (Exception)
+            catch (Exception erro)
             {
-                obj.State = 1000;
-                return;
+                Message.MessageError(erro.Message);
             }
             finally
             {
-                objConexaoDB.getCon().Close();
-                objConexaoDB.CloseDB();
+                con.getCon().Close();
+                con.CloseDB();
             }
         }
 
-        public void Delete(Product obj)
+        public void Delete(Product product)
         {
-            string delete = @"DELETE FROM product WHERE idProduct = @IDPRODUCT";
+            string script = @"DELETE FROM product WHERE idProduct = @IDPRODUCT";
 
             try
             {
-                command = new SqlCommand(delete,objConexaoDB.getCon());
-                command.Parameters.AddWithValue("@IDPRODUCT", obj.IdProduct);
-                objConexaoDB.getCon().Open();
+                command = new SqlCommand(script,con.getCon());
+                command.Parameters.AddWithValue("@IDPRODUCT", product.IdProduct);
+                con.getCon().Open();
                 command.ExecuteNonQuery();
             }
-            catch (Exception)
+            catch (Exception erro)
             {
-                obj.State = 1000;
+                Message.MessageError(erro.Message);
             }
             finally
             {
-                objConexaoDB.getCon().Close();
-                objConexaoDB.CloseDB();
+                con.getCon().Close();
+                con.CloseDB();
             }
         }
 
-        public bool Find(Product obj)
+        public bool Find(Product product)
         {
             bool registers = true;
-            string find = "SELECT * FROM product (NOLOCK) WHERE idProduct = @IDPRODUCT";
+            string script = "SELECT * FROM product (NOLOCK) WHERE idProduct = @IDPRODUCT";
 
             try
             {
-                command = new SqlCommand(find, objConexaoDB.getCon());
-                command.Parameters.AddWithValue("@IDPRODUCT", obj.IdProduct);
-                objConexaoDB.getCon().Open();
+                command = new SqlCommand(script, con.getCon());
+                command.Parameters.AddWithValue("@IDPRODUCT", product.IdProduct);
+                con.getCon().Open();
                 reader = command.ExecuteReader();
                 registers = reader.Read();
                 if (registers)
                 {
-                    obj.Name = reader["name"].ToString();
-                    obj.UnitPrice = Convert.ToDouble(reader["unitPrice"].ToString());
-                    obj.IdCategory = reader["idCategory"].ToString();
-                    obj.State = 99;
+                    product.Name = reader["name"].ToString();
+                    product.UnitPrice = Convert.ToDouble(reader["unitPrice"].ToString());
+                    product.IdCategory = reader["idCategory"].ToString();
+                    product.State = 99;
                 }
                 else
                 {
-                    obj.State = 1;
+                    product.State = 1;
                 }
             }
-            catch (Exception)
+            catch (Exception erro)
             {
-                obj.State = 1000;
+                Message.MessageError(erro.Message);
             }
             finally
             {
-                objConexaoDB.getCon().Close();
-                objConexaoDB.CloseDB();
+                con.getCon().Close();
+                con.CloseDB();
             }
 
             return registers;
         }
 
-        public bool FindCat(Product obj)
+        public bool FindCat(Product product)
         {
             bool registers = true;
-            string find = "SELECT * FROM product (NOLOCK) WHERE idCategory = @IDCATEGORY";
+            string script = "SELECT * FROM product (NOLOCK) WHERE idCategory = @IDCATEGORY";
 
             try
             {
-                command = new SqlCommand(find, objConexaoDB.getCon());
-                command.Parameters.AddWithValue("@IDCATEGORY", obj.IdCategory);
-                objConexaoDB.getCon().Open();
+                command = new SqlCommand(script, con.getCon());
+                command.Parameters.AddWithValue("@IDCATEGORY", product.IdCategory);
+                con.getCon().Open();
                 reader = command.ExecuteReader();
                 registers = reader.Read();
                 if (registers)
                 {
-                    obj.IdProduct = reader["idProduct"].ToString();
-                    obj.Name = reader["name"].ToString();
-                    obj.UnitPrice = Convert.ToDouble(reader["unitPrice"].ToString());
-                    obj.IdCategory = reader["idCategory"].ToString();
-                    obj.State = 99;
+                    product.IdProduct = reader["idProduct"].ToString();
+                    product.Name = reader["name"].ToString();
+                    product.UnitPrice = Convert.ToDouble(reader["unitPrice"].ToString());
+                    product.IdCategory = reader["idCategory"].ToString();
+                    product.State = 99;
                 }
                 else
                 {
-                    obj.State = 1;
+                    product.State = 1;
                 }
             }
-            catch (Exception)
+            catch (Exception erro)
             {
-                obj.State = 1000;
+                Message.MessageError(erro.Message);
             }
             finally
             {
-                objConexaoDB.getCon().Close();
-                objConexaoDB.CloseDB();
+                con.getCon().Close();
+                con.CloseDB();
             }
 
             return registers;
@@ -142,13 +142,13 @@ namespace Model.DAO
 
         public List<Product> FindAll()
         {
-            string findAll = "SELECT * FROM product(NOLOCK) ORDER BY name ASC";
             List<Product> list = new List<Product>();
-
+            string script = "SELECT * FROM product(NOLOCK) ORDER BY name ASC";
+ 
             try
             {
-                command = new SqlCommand(findAll, objConexaoDB.getCon());
-                objConexaoDB.getCon().Open();
+                command = new SqlCommand(script, con.getCon());
+                con.getCon().Open();
                 reader = command.ExecuteReader();
                 while (reader.Read())
                 {
@@ -157,81 +157,120 @@ namespace Model.DAO
                     product.Name = reader["name"].ToString();
                     product.UnitPrice = Convert.ToDouble(reader["unitPrice"].ToString());
                     product.IdCategory = reader["idCategory"].ToString();
+                    list.Add(product);
+                }
+            }
+            catch (Exception erro)
+            {
+                Message.MessageError(erro.Message);
+            }
+            finally
+            {
+                con.getCon().Close();
+                con.CloseDB();
+            }
+
+            return list;
+        }
+
+        public List<Product> FindAllCat(Product product)
+        {
+            List<Product> list = new List<Product>();
+            string script = "SELECT * FROM product (NOLOCK) WHERE idCategory = @IDCATEGORY"; 
+
+            try
+            {
+                command = new SqlCommand(script, con.getCon());
+                command.Parameters.AddWithValue("@IDCATEGORY", product.IdCategory);
+                con.getCon().Open();
+                reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    product.IdProduct = reader["idProduct"].ToString();
+                    product.Name = reader["name"].ToString();
+                    product.UnitPrice = Convert.ToDouble(reader["unitPrice"].ToString());
+                    product.IdCategory = reader["idCategory"].ToString();
 
                     list.Add(product);
                 }
             }
-            catch (Exception)
+            catch (Exception erro)
             {
-                throw;
+                Message.MessageError(erro.Message);
             }
             finally
             {
-                objConexaoDB.getCon().Close();
-                objConexaoDB.CloseDB();
+                con.getCon().Close();
+                con.CloseDB();
             }
 
             return list;
         }
 
-        public List<Product> FindAllCat(Product obj)
+        public void Update(Product product)
         {
-            string findAll = "SELECT * FROM product (NOLOCK) WHERE idCategory = @IDCATEGORY"; 
-            List<Product> list = new List<Product>();
+            string script = @"UPDATE product SET name = @NAME, unitPrice= @UNITPRICE, idCategory= @IDCATEGORY WHERE idProduct= @IDPRODUCT";
 
             try
             {
-                command = new SqlCommand(findAll, objConexaoDB.getCon());
-                command.Parameters.AddWithValue("@IDCATEGORY", obj.IdCategory);
-                objConexaoDB.getCon().Open();
+                command = new SqlCommand(script, con.getCon());
+                command.Parameters.AddWithValue("@NAME", product.Name);
+                command.Parameters.AddWithValue("@UNITPRICE", product.UnitPrice);
+                command.Parameters.AddWithValue("@IDCATEGORY", product.IdCategory);
+                command.Parameters.AddWithValue("@IDPRODUCT", product.IdProduct);
+                con.getCon().Open();
+                command.ExecuteNonQuery();
+            }
+            catch (Exception erro)
+            {
+                Message.MessageError(erro.Message);
+            }
+            finally
+            {
+                con.getCon().Close();
+                con.CloseDB();
+            }
+        }
+
+        #region "Listar Produto completo"
+
+        public List<ProductList> findAllProducts()
+        {
+            List<ProductList> list = new List<ProductList>();
+            string script = @"SELECT P.idProduct AS idProduct,
+                                     P.name AS nameProduct,
+                                     P.unitPrice AS unitPrice,
+                                     C.name AS nomeCategory
+                             FROM product P
+                             INNER JOIN category C ON C.idCategory = P.idCategory 
+                             ORDER BY C.name";
+            try
+            {
+                command = new SqlCommand(script, con.getCon());
+                con.getCon().Open();
                 reader = command.ExecuteReader();
                 while (reader.Read())
                 {
-                    Product productAux = new Product();
-                    productAux.IdProduct = reader["idProduct"].ToString();
-                    productAux.Name = reader["name"].ToString();
-                    productAux.UnitPrice = Convert.ToDouble(reader["unitPrice"].ToString());
-                    productAux.IdCategory = reader["idCategory"].ToString();
-
-                    list.Add(productAux);
+                    ProductList product = new ProductList();
+                    product.IdProduct = reader["idProduct"].ToString();
+                    product.Name = reader["nameProduct"].ToString();
+                    product.UnitPrice = Convert.ToDouble(reader["unitPrice"].ToString());
+                    product.NameProduct = reader["nomeCategory"].ToString();
+                    list.Add(product);
                 }
             }
-            catch (Exception)
+            catch(Exception erro)
             {
-                throw;
+                Message.MessageError(erro.Message);
             }
             finally
             {
-                objConexaoDB.getCon().Close();
-                objConexaoDB.CloseDB();
+                con.getCon().Close();
+                con.CloseDB();
             }
-
             return list;
-        }
 
-        public void Update(Product obj)
-        {
-            string update = @"UPDATE product SET name = @NAME, unitPrice= @UNITPRICE, idCategory= @IDCATEGORY WHERE idProduct= @IDPRODUCT";
-
-            try
-            {
-                command = new SqlCommand(update, objConexaoDB.getCon());
-                command.Parameters.AddWithValue("@NAME", obj.Name);
-                command.Parameters.AddWithValue("@UNITPRICE", obj.UnitPrice);
-                command.Parameters.AddWithValue("@IDCATEGORY", obj.IdCategory);
-                command.Parameters.AddWithValue("@IDPRODUCT", obj.IdProduct);
-                objConexaoDB.getCon().Open();
-                command.ExecuteNonQuery();
-            }
-            catch (Exception)
-            {
-                obj.State = 1000;
-            }
-            finally
-            {
-                objConexaoDB.getCon().Close();
-                objConexaoDB.CloseDB();
-            }
         }
+        #endregion
     }
 }

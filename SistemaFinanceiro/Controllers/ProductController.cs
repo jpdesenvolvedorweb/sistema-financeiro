@@ -23,7 +23,7 @@ namespace SistemaFinanceiro.Controllers
             SelectList list = new SelectList(data, "idCategory", "name");
             ViewBag.ListCategories = list;
 
-            List<Product> listProduct = objProductNeg.FindAll();
+            List<ProductList> listProduct = objProductNeg.FindAllProducts();
             return View(listProduct);
         }
 

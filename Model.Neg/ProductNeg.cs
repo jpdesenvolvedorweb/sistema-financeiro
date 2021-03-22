@@ -217,6 +217,11 @@ namespace Model.Neg
             return objProductDao.FindAll();
         }
 
+        public List<ProductList> FindAllProducts()
+        {
+            return objProductDao.findAllProducts();
+        }
+
         public List<Product> FindAllCat(Product product)
         {
             return objProductDao.FindAllCat(product);

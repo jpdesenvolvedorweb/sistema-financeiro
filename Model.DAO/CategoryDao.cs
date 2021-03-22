@@ -1,5 +1,6 @@
 ﻿using Model.Dao;
 using Model.Entity;
+using Model.Entity.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -8,134 +9,134 @@ namespace Model.DAO
 {
     public class CategoryDao : Intermediate<Category>
     {
-        private ConexaoDB objConexaoDb;
+        private ConexaoDB con;
         private SqlCommand command;
         private SqlDataReader reader;
 
         public CategoryDao()
         {
-            objConexaoDb = ConexaoDB.knowState();
+            con = ConexaoDB.knowState();
         }
 
-        public void Create(Category obj)
+        public void Create(Category category)
         {
-            string create = @"INSERT INTO category VALUES(@IDCATEGORY, @NAME, @DESCRIPTION)";
+            string script = @"INSERT INTO category VALUES(@IDCATEGORY, @NAME, @DESCRIPTION)";
 
             try
             {
-                command = new SqlCommand(create, objConexaoDb.getCon());
-                command.Parameters.AddWithValue("@IDCATEGORY",obj.IdCategory);
-                command.Parameters.AddWithValue("@NAME", obj.Name);
-                command.Parameters.AddWithValue("@DESCRIPTION", obj.Description);
-                objConexaoDb.getCon().Open();
+                command = new SqlCommand(script, con.getCon());
+                command.Parameters.AddWithValue("@IDCATEGORY",category.IdCategory);
+                command.Parameters.AddWithValue("@NAME", category.Name);
+                command.Parameters.AddWithValue("@DESCRIPTION", category.Description);
+                con.getCon().Open();
                 command.ExecuteNonQuery();
             }
-            catch (Exception)
+            catch (Exception erro)
             {
-                obj.State = 1000;
+                Message.MessageError(erro.Message);
             }
             finally
             {
-                objConexaoDb.getCon().Close();
-                objConexaoDb.CloseDB();
+                con.getCon().Close();
+                con.CloseDB();
             }
         }
 
-        public void Delete(Category obj)
+        public void Delete(Category category)
         {
-            string delete = @"DELETE FROM category WHERE idCategory = @IDCATEGORY";
+            string script = @"DELETE FROM category WHERE idCategory = @IDCATEGORY";
 
             try
             {
-                command = new SqlCommand(delete, objConexaoDb.getCon());
-                command.Parameters.AddWithValue("@IDCATEGORY", obj.IdCategory);
-                objConexaoDb.getCon().Open();
+                command = new SqlCommand(script, con.getCon());
+                command.Parameters.AddWithValue("@IDCATEGORY", category.IdCategory);
+                con.getCon().Open();
                 command.ExecuteNonQuery();
 
             }
-            catch (Exception)
+            catch (Exception erro)
             {
-                obj.State = 1000;
+                Message.MessageError(erro.Message);
             }
             finally
             {
-                objConexaoDb.getCon().Close();
-                objConexaoDb.CloseDB();
+                con.getCon().Close();
+                con.CloseDB();
             }
         }
 
-        public bool Find(Category obj)
+        public bool Find(Category category)
         {
-            bool registers;
+            bool registers = true;
 
-            string find = @"SELECT * FROM category(NOLOCK) WHERE idCategory = @IDCATEGORY";
+            string script = @"SELECT * FROM category(NOLOCK) WHERE idCategory = @IDCATEGORY";
 
             try
             {
-                command = new SqlCommand(find, objConexaoDb.getCon());
-                command.Parameters.AddWithValue("@IDCATEGORY",obj.IdCategory);
-                objConexaoDb.getCon().Open();
+                command = new SqlCommand(script, con.getCon());
+                command.Parameters.AddWithValue("@IDCATEGORY",category.IdCategory);
+                con.getCon().Open();
                 reader = command.ExecuteReader();
                 registers = reader.Read();
                 if (registers)
                 {
-                    obj.Name = reader["name"].ToString();
-                    obj.Description = reader["description"].ToString();
+                    category.Name = reader["name"].ToString();
+                    category.Description = reader["description"].ToString();
 
-                    obj.State = 99;
+                    category.State = 99;
                 }
                 else
                 {
-                    obj.State = 1;
+                    category.State = 1;
                 }
             }
-            catch (Exception)
+            catch (Exception erro)
             {
-                throw;
+                Message.MessageError(erro.Message);
             }
             finally
             {
-                objConexaoDb.getCon().Close();
-                objConexaoDb.CloseDB();
+                con.getCon().Close();
+                con.CloseDB();
             }
 
             return registers;
         }
 
         //Find com nome da categoria
-        public bool FindCat(Category obj)
+        public bool FindCat(Category category)
         {
-            bool registers;
+            bool registers = true;
 
-            string find = @"SELECT * FROM category(NOLOCK) WHERE name = @NAME ";
+            string script = @"SELECT * FROM category(NOLOCK) WHERE name = @NAME";
 
             try
             {
-                command = new SqlCommand(find, objConexaoDb.getCon());
-                command.Parameters.AddWithValue("@NAME", obj.Name);
-                objConexaoDb.getCon().Open();
+                command = new SqlCommand(script, con.getCon());
+                command.Parameters.AddWithValue("@NAME", category.Name);
+                con.getCon().Open();
                 reader = command.ExecuteReader();
                 registers = reader.Read();
                 if (registers)
                 {
-                    obj.Name = reader["name"].ToString();
-                    obj.Description = reader["description"].ToString();
+                    category.Name = reader["name"].ToString();
+                    category.Description = reader["description"].ToString();
 
-                    obj.State = 99;
+                    category.State = 99;
                 }
                 else
                 {
-                    obj.State = 1;
+                    category.State = 1;
                 }
             }
-            catch (Exception)
+            catch (Exception erro)
             {
-                throw;
+                Message.MessageError(erro.Message);
             }
             finally
             {
-                objConexaoDb.getCon().Close();
-                objConexaoDb.CloseDB();
+                con.getCon().Close();
+                con.CloseDB();
             }
 
             return registers;
@@ -144,56 +145,58 @@ namespace Model.DAO
         public List<Category> FindAll()
         {
             List<Category> listCategories = new List<Category>();
-            string findAll = "SELECT * FROM category(NOLOCK) ORDER BY name ASC";
+            string script = "SELECT * FROM category(NOLOCK) ORDER BY name ASC";
 
             try
             {
-                command = new SqlCommand(findAll, objConexaoDb.getCon());
-                objConexaoDb.getCon().Open();
+                command = new SqlCommand(script, con.getCon());
+                con.getCon().Open();
                 reader = command.ExecuteReader();
                 while (reader.Read())
                 {
-                    Category obj = new Category();
-                    obj.IdCategory = reader["idCategory"].ToString();
-                    obj.Name = reader["name"].ToString();
-                    obj.Description = reader["description"].ToString();
+                    Category category = new Category();
+                    category.IdCategory = reader["idCategory"].ToString();
+                    category.Name = reader["name"].ToString();
+                    category.Description = reader["description"].ToString();
 
-                    listCategories.Add(obj);
+                    listCategories.Add(category);
                 }
             }
-            catch (Exception)
+            catch (Exception erro)
             {
-                throw;
+                Message.MessageError(erro.Message);
             }
             finally
             {
-                objConexaoDb.getCon().Close();
-                objConexaoDb.CloseDB();
+                con.getCon().Close();
+                con.CloseDB();
             }
             return listCategories;
         }
 
-        public void Update(Category obj)
+        public void Update(Category category)
         {
-            string update = @"UPDATE category SET name= @NAME, description= @DESCRIPTION WHERE idCategory = @IDCATEGORY";
+            string script = @"UPDATE category SET name= @NAME, 
+                                                  description= @DESCRIPTION 
+                              WHERE idCategory = @IDCATEGORY";
 
             try
             {
-                command = new SqlCommand(update, objConexaoDb.getCon());
-                command.Parameters.AddWithValue("@NAME", obj.Name);
-                command.Parameters.AddWithValue("@DESCRIPTION", obj.Description);
-                command.Parameters.AddWithValue("@IDCATEGORY", obj.IdCategory);
-                objConexaoDb.getCon().Open();
+                command = new SqlCommand(script, con.getCon());
+                command.Parameters.AddWithValue("@NAME", category.Name);
+                command.Parameters.AddWithValue("@DESCRIPTION", category.Description);
+                command.Parameters.AddWithValue("@IDCATEGORY", category.IdCategory);
+                con.getCon().Open();
                 command.ExecuteNonQuery();
             }
-            catch (Exception)
+            catch (Exception erro)
             {
-                obj.State = 1000;
+                Message.MessageError(erro.Message);
             }
             finally
             {
-                objConexaoDb.getCon().Close();
-                objConexaoDb.CloseDB();
+                con.getCon().Close();
+                con.CloseDB();
             }
         }
     }

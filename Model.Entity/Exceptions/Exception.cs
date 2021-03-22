@@ -2,9 +2,9 @@
 
 namespace Model.Entity.Exceptions
 {
-    public class Exception : ApplicationException
+    public class ExceptionX : ApplicationException
     {
-        public Exception(string message): base(message)
+        public ExceptionX(string message): base(message)
         {
         }
     }
